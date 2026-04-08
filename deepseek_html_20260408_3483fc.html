@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>SAY Class | 李丫丫：两滴油里的世界史 · 全科点火课</title>
+    <!-- 引入谷歌字体提升阅读质感 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 (免费图标库) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #fef7e8;  /* 温暖羊皮纸底色，呼应丁香/石油的古老质感 */
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: #2c2418;
+            line-height: 1.5;
+        }
+
+        /* 装饰纹理 — 隐约石油流动感&香料颗粒 */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle at 10% 20%, rgba(210, 180, 140, 0.08) 2%, transparent 2.5%),
+                              repeating-linear-gradient(45deg, rgba(0,0,0,0.01) 0px, rgba(0,0,0,0.01) 2px, transparent 2px, transparent 8px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2rem 1.8rem 4rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* 卡片与模块 */
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 1rem;
+            background: rgba(255, 248, 235, 0.7);
+            border-radius: 4rem 2rem 4rem 2rem;
+            backdrop-filter: blur(2px);
+            border-bottom: 3px solid #c57f2e;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.6rem;
+            font-weight: 600;
+            color: #7a3e1c;
+            letter-spacing: -0.01em;
+        }
+
+        .hero .sub {
+            font-size: 1.2rem;
+            margin-top: 0.75rem;
+            color: #9b6a3b;
+            border-top: 1px dashed #e4c8a7;
+            display: inline-block;
+            padding-top: 0.6rem;
+        }
+
+        .intro-card {
+            background: #fffaf2;
+            border-radius: 2rem;
+            padding: 1.8rem 2rem;
+            margin-bottom: 2.8rem;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.05);
+            border-left: 10px solid #c57f2e;
+            font-size: 1.12rem;
+        }
+
+        .oil-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .oil-card {
+            flex: 1;
+            background: linear-gradient(145deg, #ffffff 0%, #fff6ea 100%);
+            border-radius: 2rem;
+            padding: 1.8rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease;
+            border: 1px solid #f0e0ca;
+        }
+
+        .oil-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .clove {
+            border-top: 6px solid #2f6b2f;
+        }
+        .petro {
+            border-top: 6px solid #2c2c2c;
+        }
+
+        .oil-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1rem;
+        }
+        .oil-title i {
+            font-size: 2rem;
+        }
+
+        .insight {
+            background: #e7dcc8;
+            padding: 1rem 1.4rem;
+            border-radius: 1.5rem;
+            margin: 1.2rem 0;
+            font-style: italic;
+        }
+
+        .section-title {
+            font-size: 1.9rem;
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            margin: 2rem 0 1rem 0;
+            border-left: 5px solid #c57f2e;
+            padding-left: 1.2rem;
+        }
+
+        .imperial-box, .said-box {
+            background: #f2ecdf;
+            border-radius: 1.8rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 2rem 0;
+            background: #fffaf2;
+            border-radius: 1.5rem;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background: #d9c7aa;
+            color: #2c2418;
+            padding: 1rem;
+            font-weight: 600;
+        }
+        td {
+            border-bottom: 1px solid #e7dcc8;
+            padding: 1rem;
+            vertical-align: top;
+        }
+
+        .prompt-card {
+            background: #2c2418;
+            color: #faeedc;
+            border-radius: 2rem;
+            padding: 1.8rem;
+            margin: 2rem 0;
+            font-family: monospace;
+            box-shadow: 0 20px 30px -10px rgba(0,0,0,0.3);
+        }
+
+        .lang-switch {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        .lang-btn {
+            background: white;
+            border: 1px solid #c9ad7a;
+            padding: 0.5rem 1.4rem;
+            border-radius: 40px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #7a3e1c;
+        }
+        .lang-btn.active {
+            background: #c57f2e;
+            color: white;
+            border-color: #c57f2e;
+        }
+        .lang-content {
+            display: none;
+        }
+        .lang-content.active-lang {
+            display: block;
+        }
+        footer {
+            text-align: center;
+            margin-top: 3.5rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e2cfb0;
+            font-size: 0.85rem;
+            color: #8b6946;
+        }
+        i.fa, i.far, i.fas {
+            margin-right: 6px;
+        }
+        @media (max-width: 750px) {
+            .container {
+                padding: 1rem;
+            }
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            .oil-title {
+                font-size: 1.4rem;
+            }
+        }
+        .quote {
+            font-weight: 500;
+            background: #fff2e2;
+            border-radius: 1rem;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .btn-icon {
+            background: none;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- 多语言切换 -->
+    <div class="lang-switch">
+        <button class="lang-btn" data-lang="zh">🌏 中文 · 汉语</button>
+        <button class="lang-btn" data-lang="en">🇬🇧 English</button>
+        <button class="lang-btn" data-lang="sw">🇹🇿 Kiswahili</button>
+    </div>
+
+    <!-- 中文内容 -->
+    <div id="lang-zh" class="lang-content active-lang">
+        <div class="hero">
+            <h1>SAY Class · 全科点火课</h1>
+            <div class="sub">🌿 李丫丫 | 两滴油：丁香油与石油，拆解世界的财富与权力</div>
+        </div>
+        <div class="intro-card">
+            <p><strong>孩子们，老师们，大家好！欢迎来到 SAY Class，我叫李丫丫。</strong> 今天，我要用两滴大家最熟悉的液体——<strong>丁香油</strong>和<strong>石油</strong>，来拆解这个世界的财富、权力与争斗。不要觉得这些事离我们很远，其实，每一滴油里都藏着桑给巴尔的过去，也藏着人类文明的未来。</p>
+        </div>
+
+        <!-- 两滴油 -->
+        <div class="oil-grid">
+            <div class="oil-card clove">
+                <div class="oil-title"><i class="fas fa-leaf" style="color:#2f6b2f;"></i> 丁香油 <span style="font-size:0.9rem;">（农业文明的巅峰）</span></div>
+                <p>几百年前，这滴油就是世界的"黄金"。阿拉伯人、葡萄牙人、英国人跨越海洋来到这里，是因为丁香能止痛、能让食物变美味。</p>
+                <div class="insight"><i class="fas fa-history"></i> <strong>历史线索：</strong> 为了这滴油，苏丹把首都搬到了我们这里。</div>
+            </div>
+            <div class="oil-card petro">
+                <div class="oil-title"><i class="fas fa-oil-can" style="color:#2c2c2c;"></i> 石油 <span style="font-size:0.9rem;">（工业文明的血液）</span></div>
+                <p>后来，人们发现了地底下的黑金。它能让巨大的轮船不用帆也能跑，能让黑夜亮起灯。世界上很多战争（比如中东的局势），本质上都是为了争夺这瓶"黑水"。</p>
+                <div class="insight"><i class="fas fa-globe-asia"></i> <strong>世界局势：</strong> 能源即权力，冲突即博弈。</div>
+            </div>
+        </div>
+        <div class="quote"><i class="fas fa-brain"></i> <strong>全科视角：</strong> 丁香油来自土地的呼吸（生物能），石油来自远古的沉积（化石能）。谁控制了能量，谁就控制了说话的权力。</div>
+
+        <!-- 文化帝国主义 -->
+        <div class="section-title"><i class="fas fa-mask"></i> 什么是《文化帝国主义》？——谁在定义美丑？</div>
+        <div class="imperial-box">
+            <p>孩子们，如果有一个外乡人来到你的村子，他不仅拿走了你的丁香，还告诉你：“你的衣服很丑，你的语言很土，只有穿我的衣服、说我的话，你才是文明人。”这就是<strong>文化帝国主义</strong>。</p>
+            <p><i class="fas fa-gun"></i> <strong>不仅仅是大炮：</strong> 帝国主义不只是用枪占领土地。<br>
+            <i class="fas fa-brain"></i> <strong>脑子里的占领：</strong> 它是通过书本、电影、甚至你手机里的视频，让你觉得“别人的东西永远是好的，自己的文化是落后的”。<br>
+            <i class="fas fa-book-open"></i> <strong>萨义德的观点：</strong> 伟大的学者萨义德告诉我们，西方在描写我们的时候，常常把我们写成“需要被拯救的荒野”，这其实是为了让他们占领我们的石油和丁香变得“理所应当”。</p>
+        </div>
+
+        <!-- 人类文明框架表格 -->
+        <div class="section-title"><i class="fas fa-chart-line"></i> 人类文明的整体框架：战争与和平的轮盘</div>
+        <div class="table-wrapper">
+            <table>
+                <thead><tr><th>阶段</th><th>争夺的核心</th><th>冲突的形式</th><th>你的位置</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>远古根源</strong></td><td>生存空间</td><td>部落为了水源和草场而战。</td><td>我们在土地上耕作。</td></tr>
+                    <tr><td><strong>二希传统</strong></td><td>灵魂与秩序</td><td>希伯来（绝对信仰）vs 希腊（理性逻辑）。</td><td>宗教与哲学的碰撞，产生了不同的世界观。</td></tr>
+                    <tr><td><strong>帝国扩张</strong></td><td>丁香与香料</td><td>十字军东征、大航海时代。</td><td>桑给巴尔成为世界贸易的中心。</td></tr>
+                    <tr><td><strong>现代博弈</strong></td><td>石油与数据</td><td>中东战争、AI技术竞赛。</td><td>我们正在学习如何用 AI 拿回发言权。</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section-title"><i class="fas fa-graduation-cap"></i> 为什么我们要学习全科？</div>
+        <p>大家可能会问：“老师，我是学历史的，为什么要懂石油和 AI？” 因为<strong>世界是连在一起的</strong>。如果你不懂石油的化学原理，你就看不清中东为什么在打仗；如果你不懂文化帝国主义，你就不知道为什么我们要努力在网上写出属于桑给巴尔自己的故事。</p>
+        <p><i class="fas fa-laptop-code"></i> <strong>我们正在做的事情：</strong> 我们不是在教你背诵过时的年份。在我们的 <strong>SAY Hub</strong> 网页系统里，你点击“丁香”，就能看到物理的蒸馏、地理的季风和历史的殖民。</p>
+
+        <!-- 课后点火练习 -->
+        <div class="prompt-card">
+            <i class="fas fa-fire" style="font-size:1.8rem;"></i> <strong>💡 课后点火练习：</strong><br>
+            老师们，等下回到教室，请打开你们基站的电脑，尝试给 AI 下一个指令（Prompt）：<br>
+            <code style="background:#3e3226; padding:0.6rem; display:inline-block; border-radius:1rem; margin:0.6rem 0;">“请用桑给巴尔石头城的一个老建筑作为例子，解释什么叫做'文化融合'，并告诉我这里面包含哪些物理力学知识。”</code>
+        </div>
+        <div class="quote"><strong>老师总结：</strong> 过去，别人通过控制石油和文化来统治世界。今天，你们通过学习 AI 全科知识，就像拿到了开启未来的钥匙。你们不再是被动接受故事的人，你们是书写历史的人。</div>
+    </div>
+
+    <!-- 英文版 English Version -->
+    <div id="lang-en" class="lang-content">
+        <div class="hero">
+            <h1>SAY Class · Interdisciplinary Ignition</h1>
+            <div class="sub">🌿 Li Yaya | Two Oils: Clove Oil & Petroleum — Deconstructing Wealth & Power</div>
+        </div>
+        <div class="intro-card"><strong>Hello students and teachers! Welcome to SAY Class. My name is Li Yaya.</strong> Today, I want to use two liquids you know best — Clove Oil and Petroleum — to deconstruct the world's wealth, power, and struggles. Don't think these things are far away; in fact, every drop of oil hides Zanzibar's past and the future of human civilization.</div>
+        <div class="oil-grid">
+            <div class="oil-card clove"><div class="oil-title"><i class="fas fa-leaf"></i> Clove Oil <span style="font-size:0.9rem;">(Peak of Agricultural Civilization)</span></div><p>Centuries ago, this drop was the world's "gold." Arabs, Portuguese, and the British crossed oceans to get here because cloves could stop pain and make food delicious.</p><div class="insight"><i class="fas fa-history"></i> Historical Clue: Because of this oil, the Sultan moved his capital right here to us.</div></div>
+            <div class="oil-card petro"><div class="oil-title"><i class="fas fa-oil-can"></i> Petroleum <span style="font-size:0.9rem;">(Blood of Industrial Civilization)</span></div><p>Later, "black gold" was discovered underground. It allowed massive ships to sail without sails and lit up the dark night. Many wars today (like the situation in the Middle East) are essentially struggles for this "black water."</p><div class="insight"><i class="fas fa-globe-asia"></i> Global Situation: Energy = Power.</div></div>
+        </div>
+        <div class="quote"><i class="fas fa-brain"></i> Interdisciplinary Perspective: Clove oil comes from the breath of the land (Bioenergy); petroleum from ancient sediments (Fossil Fuel). Whoever controls energy controls the power to speak.</div>
+        <div class="section-title"><i class="fas fa-mask"></i> What is "Culture Imperialism"? — Who Defines Beauty?</div>
+        <div class="imperial-box"><p>Children, if a stranger came to your village, took your cloves, and told you: "Your clothes are ugly, your language is primitive; you are only civilized if you wear my clothes and speak my tongue" — that is Culture Imperialism.</p><p><i class="fas fa-gun"></i> More Than Just Cannons: Imperialism isn't just occupying land with guns.<br><i class="fas fa-brain"></i> Occupation of the Mind: It's through books, movies, and videos on your phone that make you feel "others' things are always better."<br><i class="fas fa-book-open"></i> Said's View: Edward Said told us the West often describes us as a "wilderness needing rescue" to justify occupation of our oil and cloves.</p></div>
+        <div class="section-title"><i class="fas fa-chart-line"></i> The Framework of Human Civilization</div>
+        <div class="table-wrapper"><table><thead><tr><th>Stage</th><th>Core Struggle</th><th>Form of Conflict</th><th>Your Position</th></tr></thead><tbody><tr><td>Ancient Roots</td><td>Survival Space</td><td>Tribes fighting for water and pasture.</td><td>We were farming the land.</td></tr><tr><td>Dual Traditions</td><td>Soul & Order</td><td>Hebrew (Faith) vs Greek (Logic).</td><td>Collision of religion and philosophy.</td></tr><tr><td>Imperial Expansion</td><td>Cloves & Spices</td><td>The Crusades; Age of Discovery.</td><td>Zanzibar becomes a global trade hub.</td></tr><tr><td>Modern Gambit</td><td>Oil & Data</td><td>Middle East wars; AI tech race.</td><td>We are learning AI to reclaim our voice.</td></tr></tbody></table></div>
+        <div class="section-title"><i class="fas fa-graduation-cap"></i> Why Learn Interdisciplinary Education?</div>
+        <p>You might ask: "Teacher, I study history, why should I know about oil and AI?" Because the world is connected. If you don't understand the chemistry of oil, you won't see why there is war in the Middle East. If you don't understand Culture Imperialism, you won't know why we must write Zanzibar's own stories online.</p>
+        <div class="prompt-card"><i class="fas fa-fire"></i> <strong>🔥 Post-class Exercise:</strong><br> Teachers, open your computers and try this AI prompt:<br> <code style="background:#3e3226; padding:0.5rem; border-radius:1rem;">"Please use an old building in Zanzibar's Stone Town as an example to explain 'cultural fusion', and tell me what physics/mechanics principles are involved in its construction."</code></div>
+        <div class="quote"><strong>Teacher's Conclusion:</strong> In the past, others ruled the world through oil and culture. Today, by learning AI and holistic knowledge, you hold the key to the future. You are no longer passive receivers of stories — you are the writers of history.</div>
+    </div>
+
+    <!-- 斯瓦希里语 Kiswahili Version -->
+    <div id="lang-sw" class="lang-content">
+        <div class="hero"><h1>SAY Class · Mwako wa Elimu Jumuishi</h1><div class="sub">🌿 Li Yaya | Matone mawili: Mafuta ya Karafuu na Petroli</div></div>
+        <div class="intro-card"><strong>Habari zenu wanafunzi na walimu! Karibuni SAY Class, naitwa Li Yaya.</strong> Leo, nataka kutumia vitu viwili vya majimaji mnavyovijua vizuri zaidi — Mafuta ya Karafuu na Petroli — kuchambua utajiri, nguvu, na mapambano ya ulimwengu. Kila tone linaficha historia ya Zanzibar na mustakabali wa ustaarabu.</div>
+        <div class="oil-grid"><div class="oil-card clove"><div class="oil-title"><i class="fas fa-leaf"></i> Mafuta ya Karafuu</div><p>Karne nyingi zilizopita, tone hili lilikuwa "dhahabu" ya dunia. Waarabu, Wareno, Waingereza walivuka bahari kwa sababu karafuu inatuliza maumivu na kufanya chakula kitamu.</p><div class="insight"><i class="fas fa-history"></i> Dokezo la Kihistoria: Kwa sababu ya mafuta haya, Sultani alihamishia mji mkuu kwetu.</div></div><div class="oil-card petro"><div class="oil-title"><i class="fas fa-oil-can"></i> Petroli</div><p>Baadaye "dhahabu nyeusi" iligunduliwa. Meli kubwa ziliweza kwenda bila matanga, na taa zikaangaza usiku. Vita nyingi duniani (Mashariki ya Kati) ni mapambano ya kugombea "maji meusi".</p><div class="insight"><i class="fas fa-globe-asia"></i> Nishati = Nguvu ya Kusema.</div></div></div>
+        <div class="quote"><i class="fas fa-brain"></i> Mtazamo wa Jumla: Mafuta ya karafuu yanatokana na pumzi ya ardhi (Bioenergy), petroli kutoka mabaki ya kale (Fossil Fuel). Anayedhibiti nishati ndiye anayedhibiti nguvu ya kusema.</div>
+        <div class="section-title"><i class="fas fa-mask"></i> "Ubeberu wa Kitamaduni" ni nini?</div>
+        <div class="imperial-box"><p>Mgeni akija kijijini kwako, akachukua karafuu zako na kukuambia "Nguo zako ni mbaya, lugha yako ya kizamani; utakuwa mstaarabu tu ukivaa nguo zangu" — huo ni Ubeberu wa Kitamaduni.</p><p><i class="fas fa-gun"></i> Sio mizinga pekee: Ubeberu sio tu kuvamia ardhi. <br><i class="fas fa-brain"></i> Uvamizi wa Akili: Kupitia vitabu, sinema, simu unahisi "vya wengine ni bora". <br><i class="fas fa-book-open"></i> Mtazamo wa Said: Edward Said alituambia Magharibi yanatuelezea kama "nyika inayohitaji uokoaji" ili kuhalalisha uvamizi wa petroli na karafuu zetu.</p></div>
+        <div class="section-title"><i class="fas fa-chart-line"></i> Muundo wa Ustaarabu wa Mwanadamu</div>
+        <div class="table-wrapper"><table><thead><tr><th>Hatua</th><th>Kiini cha Mapambano</th><th>Aina ya Mgogoro</th><th>Nafasi Yako</th></tr></thead><tbody><tr><td>Mizizi ya Kale</td><td>Nafasi ya Kuishi</td><td>Makabila yakipigania maji na malisho</td><td>Tulikuwa tukilima ardhi</td></tr><tr><td>Mila Mbili</td><td>Roho na Utaratibu</td><td>Kiebrania (Imani) vs Kigiriki (Mantiki)</td><td>Mgongano wa dini na falsafa</td></tr><tr><td>Upanuzi wa Milki</td><td>Karafuu na Viungo</td><td>Vita vya Msalaba; Enzi ya Ugunduzi</td><td>Zanzibar inakuwa kitovu cha biashara</td></tr><tr><td>Ushindani wa Kisasa</td><td>Petroli na Data</td><td>Vita vya Mashariki ya Kati; AI</td><td>Tunajifunza AI ili kurudisha sauti yetu</td></tr></tbody></table></div>
+        <div class="section-title"><i class="fas fa-graduation-cap"></i> Kwa nini Elimu Jumuishi?</div>
+        <p>Mnaweza kuuliza: "Mwalimu, nasoma historia, kwa nini nijue petroli na AI?" Kwa sababu dunia imeunganishwa. Usipoelewa kemia ya petroli, hutaona vita Mashariki ya Kati. Usipoelewa Ubeberu wa Kitamaduni, hutajua kwa nini tuandike hadithi za Zanzibar wenyewe.</p>
+        <div class="prompt-card"><i class="fas fa-fire"></i> <strong>🔥 Zoezi la Baada ya Darasa:</strong><br> Walimu, fungua kompyuta zenu na mpe AI maagizo haya:<br> <code style="background:#3e3226; padding:0.5rem; border-radius:1rem;">"Tafadhali tumia jengo moja la kale la Stone Town, Zanzibar kama mfano, kuelezea 'mchanganyiko wa kitamaduni', na niambie ni kanuni gani za fizikia zilizotumika kulijenga."</code></div>
+        <div class="quote"><strong>Hitimisho la Mwalimu:</strong> Zamani, wengine walidhibiti dunia kupitia petroli na utamaduni. Leo, ninyi kwa kujifunza AI na elimu jumuishi, mmeshika ufunguo wa mustakabali. Ninyi ndio waandishi wa historia.</div>
+    </div>
+
+    <footer>
+        <i class="fas fa-dove"></i> SAY Class — 从桑给巴尔到世界，全科思维点燃未来 · 讲稿: 李丫丫<br>
+        🌍 丁香油 & 石油 | 文化融合 | 后殖民智慧 |  AI 世代发声
+    </footer>
+</div>
+
+<script>
+    // 多语言切换逻辑
+    const btns = document.querySelectorAll('.lang-btn');
+    const contents = {
+        zh: document.getElementById('lang-zh'),
+        en: document.getElementById('lang-en'),
+        sw: document.getElementById('lang-sw')
+    };
+
+    function setActiveLang(lang) {
+        for (let [key, element] of Object.entries(contents)) {
+            if (element) {
+                if (key === lang) {
+                    element.classList.add('active-lang');
+                } else {
+                    element.classList.remove('active-lang');
+                }
+            }
+        }
+        btns.forEach(btn => {
+            if (btn.getAttribute('data-lang') === lang) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+    }
+
+    btns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const lang = btn.getAttribute('data-lang');
+            setActiveLang(lang);
+        });
+    });
+
+    // 默认中文激活 (如果url参数?lang=en/sw 可选)
+    const urlParams = new URLSearchParams(window.location.search);
+    const langParam = urlParams.get('lang');
+    if (langParam && (langParam === 'en' || langParam === 'sw' || langParam === 'zh')) {
+        setActiveLang(langParam);
+    } else {
+        setActiveLang('zh');
+    }
+</script>
+</body>
+</html>
