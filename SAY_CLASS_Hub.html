@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>SAY CLASS · AI Teacher Hub</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: #F4F6FA;
+            color: #121826;
+            line-height: 1.4;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: #F4F6FA;
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.02);
+        }
+
+        .app-header {
+            background: linear-gradient(135deg, #1D9E75 0%, #158463 100%);
+            color: white;
+            padding: calc(24px + env(safe-area-inset-top, 20px)) 24px 28px;
+            border-radius: 0 0 32px 32px;
+            box-shadow: 0 8px 20px rgba(29, 158, 117, 0.18);
+            position: relative;
+            z-index: 2;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .app-title {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -0.8px;
+            background: rgba(255,255,255,0.15);
+            display: inline-block;
+            padding: 2px 12px 2px 0;
+            border-radius: 40px;
+        }
+
+        .admin-badge {
+            font-size: 11px;
+            background: rgba(255,255,255,0.22);
+            padding: 5px 12px;
+            border-radius: 40px;
+            font-weight: 500;
+            backdrop-filter: blur(2px);
+        }
+
+        .hub-sub {
+            font-size: 12px;
+            opacity: 0.85;
+            margin-top: 8px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .stats-scroller {
+            display: flex;
+            gap: 14px;
+            overflow-x: auto;
+            padding: 18px 20px 12px 20px;
+            scrollbar-width: none;
+        }
+        .stats-scroller::-webkit-scrollbar { display: none; }
+
+        .m-stat-card {
+            background: white;
+            padding: 12px 20px;
+            border-radius: 28px;
+            min-width: 112px;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            border: 1px solid rgba(0,0,0,0.02);
+        }
+        .m-stat-label {
+            font-size: 11px;
+            color: #6C757D;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+        .m-stat-value {
+            font-size: 24px;
+            font-weight: 800;
+            color: #1D9E75;
+            line-height: 1.2;
+        }
+
+        .search-section {
+            padding: 4px 20px 20px;
+        }
+        .m-input {
+            width: 100%;
+            border: 1.5px solid #E9ECF0;
+            background: white;
+            padding: 14px 20px;
+            border-radius: 34px;
+            font-size: 16px;
+            font-weight: 500;
+            outline: none;
+            transition: 0.25s;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+        }
+        .m-input:focus {
+            border-color: #1D9E75;
+            box-shadow: 0 0 0 3px rgba(29,158,117,0.1);
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 0 20px 16px;
+            scrollbar-width: none;
+        }
+        .filter-row::-webkit-scrollbar { display: none; }
+        .filter-chip {
+            font-size: 11px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1.5px solid #E0E5EB;
+            background: white;
+            color: #5E6870;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: 0.18s;
+        }
+        .filter-chip.active {
+            background: #1D9E75;
+            color: white;
+            border-color: #1D9E75;
+        }
+
+        .list-wrapper {
+            padding: 0 20px 110px;
+        }
+        .m-card {
+            background: white;
+            border-radius: 24px;
+            padding: 16px 18px;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(0,0,0,0.03);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            cursor: pointer;
+        }
+        .m-card:active {
+            transform: scale(0.99);
+            background: #FEFEFE;
+        }
+
+        .m-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 20px;
+            background: #E0F5ED;
+            color: #1D9E75;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            flex-shrink: 0;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+        .m-details { flex: 1; min-width: 0; }
+        .m-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #0F1419;
+            margin-bottom: 3px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .m-id {
+            font-size: 10px;
+            background: #F0F2F5;
+            color: #888;
+            padding: 2px 7px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+        .m-subtext {
+            font-size: 12px;
+            color: #5E6870;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .pill {
+            font-size: 10px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        .pill-phone { background: #F2F4F8; color: #1D9E75; }
+        .pill-exp   { background: #FFF8E6; color: #B07B00; }
+        .pill-uni   { background: #F0F2FA; color: #4B5B8C; }
+        .pill-level { background: #F5F0FF; color: #6B4EAA; }
+        .m-badges { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+        .m-tag {
+            font-size: 10px;
+            padding: 3px 10px;
+            background: #F0F2F5;
+            border-radius: 30px;
+            font-weight: 600;
+            color: #2C3E50;
+            white-space: nowrap;
+        }
+        .tag-math     { background: #E6F7F0; color: #1D9E75; }
+        .tag-ict      { background: #E8F0FE; color: #1D4ED8; }
+        .tag-civics   { background: #FFF0E6; color: #C45C1B; }
+        .tag-bio      { background: #F0FFF4; color: #276749; }
+        .tag-physics  { background: #FEF0FF; color: #7C3AED; }
+        .tag-kisw     { background: #FFF5F5; color: #C53030; }
+        .tag-hist     { background: #FFFBEB; color: #92400E; }
+        .tag-geo      { background: #E0F2FE; color: #0369A1; }
+        .tag-chem     { background: #F0FDF4; color: #166534; }
+        .tag-eng      { background: #EFF6FF; color: #1E40AF; }
+        .website-link {
+            font-size: 10px;
+            background: #E8F0FE;
+            padding: 3px 10px;
+            border-radius: 20px;
+            color: #1D4ED8;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+        }
+        .m-arrow { color: #B9C2CC; font-size: 22px; margin-left: 4px; flex-shrink: 0; }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-width: 500px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.94);
+            backdrop-filter: blur(20px);
+            height: 78px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 8px 20px 24px;
+            border-top: 0.5px solid #EFF2F6;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.02);
+            z-index: 10;
+        }
+        .nav-btn {
+            text-align: center;
+            color: #8E98A3;
+            text-decoration: none;
+            font-size: 10px;
+            font-weight: 600;
+            transition: 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+        .nav-btn.active { color: #1D9E75; }
+        .nav-icon { font-size: 24px; display: block; }
+
+        .empty-state {
+            text-align: center;
+            padding: 48px 20px;
+            color: #8A99AA;
+            font-weight: 500;
+            background: white;
+            border-radius: 32px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 480px) {
+            .app-header { padding: calc(20px + env(safe-area-inset-top)) 20px 24px; }
+            .m-card { padding: 14px; }
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="app-header">
+        <div class="header-top">
+            <div class="app-title">SAY CLASS</div>
+            <div class="admin-badge">Admin: PI LI</div>
+        </div>
+        <div class="hub-sub">
+            <span>⚡ AI Transformation Hub</span>
+            <span>• Zanzibar</span>
+        </div>
+    </div>
+
+    <div class="stats-scroller">
+        <div class="m-stat-card">
+            <div class="m-stat-label">📚 TEACHERS</div>
+            <div class="m-stat-value" id="teacherCount">26</div>
+        </div>
+        <div class="m-stat-card">
+            <div class="m-stat-label">🏫 SCHOOLS</div>
+            <div class="m-stat-value" id="schoolCount">0</div>
+        </div>
+        <div class="m-stat-card">
+            <div class="m-stat-label">✅ STATUS</div>
+            <div class="m-stat-value">LIVE</div>
+        </div>
+    </div>
+
+    <div class="search-section">
+        <input type="text" class="m-input" id="searchInput" placeholder="🔍 Search name, school, phone or subject..." autocomplete="off">
+    </div>
+
+    <div class="filter-row" id="filterRow">
+        <button class="filter-chip active" onclick="setFilter('ALL', this)">All</button>
+        <button class="filter-chip" onclick="setFilter('MATH', this)">Math</button>
+        <button class="filter-chip" onclick="setFilter('ICT', this)">ICT</button>
+        <button class="filter-chip" onclick="setFilter('BIOLOGY', this)">Biology</button>
+        <button class="filter-chip" onclick="setFilter('PHYSICS', this)">Physics</button>
+        <button class="filter-chip" onclick="setFilter('KISWAHILI', this)">Kiswahili</button>
+        <button class="filter-chip" onclick="setFilter('CIVICS', this)">Civics</button>
+        <button class="filter-chip" onclick="setFilter('HISTORY', this)">History</button>
+        <button class="filter-chip" onclick="setFilter('GEOGRAPHY', this)">Geography</button>
+        <button class="filter-chip" onclick="setFilter('ENGLISH', this)">English</button>
+        <button class="filter-chip" onclick="setFilter('HUB', this)">Has Hub 🌐</button>
+    </div>
+
+    <div class="list-wrapper" id="teacherListContainer"></div>
+
+    <div class="bottom-nav">
+        <a href="#" class="nav-btn active" id="navStations"><span class="nav-icon">🏫</span>Stations</a>
+        <a href="#" class="nav-btn" id="navCourse"><span class="nav-icon">📚</span>Course</a>
+        <a href="#" class="nav-btn" id="navProfile"><span class="nav-icon">👤</span>Profile</a>
+    </div>
+</div>
+
+<script>
+const allTeachers = [
+  { id:1,  name:'Khalid Kh Salum',        school:'Kinuni Sec',                      phone:'774780864',  subject:'ICT',              exp:'25 yrs', uni:'Summait University',                           level:'Degree',         hub:null },
+  { id:2,  name:'Khairat N. Abdalla',      school:'Kinyasini Sec',                   phone:'773093344',  subject:'ENG + KISW',       exp:'7 yrs',  uni:'Muslim University of Morogoro',                level:'Degree',         hub:null },
+  { id:3,  name:'Sabrina S. Abdalla',      school:'Kwamtipura Sec',                  phone:'772670883',  subject:'HIST + GEO',       exp:'1 yr',   uni:'The State University of Zanzibar',             level:'Diploma',        hub:null },
+  { id:4,  name:'Abed S. Abeid',           school:'Kwamtipura Sec',                  phone:'774072688',  subject:'MATH + ICT',       exp:'2 yrs',  uni:'The State University of Zanzibar',             level:'Degree',         hub:null },
+  { id:5,  name:'Pili A. Juma',            school:'Kama Sec',                        phone:'773297309',  subject:'MATH',             exp:'25 yrs', uni:'Nkuruma College',                              level:'Degree',         hub:null },
+  { id:6,  name:'Ame Rashid Ame',          school:'Dr John P. Magufuli Sec',         phone:'773034077',  subject:'MATH',             exp:'6 yrs',  uni:'The State University of Zanzibar',             level:'Degree',         hub:null },
+  { id:7,  name:'Badru Khatib Khamis',     school:'Abedi Amani Sec',                 phone:'773027255',  subject:'HIST + GEO',       exp:'10 yrs', uni:'Muslim University of Morogoro',                level:'Degree',         hub:null },
+  { id:8,  name:'Rauhiya Ali Maalim',      school:'Hasnu Maka Sec',                  phone:'672966482',  subject:'KISWAHILI',        exp:'7 yrs',  uni:'The State University of Zanzibar',             level:'Degree',         hub:null },
+  { id:9,  name:'Iptisam Amran Masoud',    school:'Nyerere Sec',                     phone:'719082800',  subject:'ICT',              exp:'7 yrs',  uni:'Summait University',                           level:'Diploma',        hub:null },
+  { id:10, name:'Haruwa Kh. Mohd',         school:'Aboud Jumbe Sec',                 phone:'659801723',  subject:'KISWAHILI',        exp:'22 yrs', uni:'University of Dodoma',                         level:'Masters',        hub:null },
+  { id:11, name:'Safia Ratibu Mfamau',     school:'Mtoni Msi 1&2',                   phone:'773138869',  subject:'KISWAHILI',        exp:'25 yrs', uni:'Nkuruma College',                              level:'Diploma',        hub:null },
+  { id:12, name:'Samira Zuberi Saidi',     school:'Kidongo Chekundu Sec',            phone:'718494204',  subject:'CIVICS',           exp:'5 yrs',  uni:'Summait University',                           level:'Degree',         hub:'https://samirasukheil4-del.github.io/civics1/' },
+  { id:13, name:'Abdul Latif J. Said',     school:'Benmbela Sec',                    phone:'778727287',  subject:'BIOLOGY',          exp:'7 yrs',  uni:'Maharish Markandeshwar University, India',     level:'Masters',        hub:null },
+  { id:14, name:'Zainab Soud Hamad',       school:'Bembela Sec',                     phone:'773910891',  subject:'PHYSICS',          exp:'5 yrs',  uni:'Summait University',                           level:'Degree',         hub:null },
+  { id:15, name:'Idrisa Hassan Sinde',     school:'Sufa School',                     phone:'715567296',  subject:'BIOLOGY',          exp:'5 yrs',  uni:"Alharamayn Islamic Teacher's College",         level:'Diploma',        hub:null },
+  { id:16, name:'Khamis Makame Ame',       school:'Ali Juma Shamuhuna Sec',          phone:'773355530',  subject:'ICT',              exp:'16 yrs', uni:'Zanzibar University (ZU)',                     level:'Degree',         hub:null },
+  { id:17, name:'Hasina Omar Ali',         school:'Kama Sec',                        phone:'773719488',  subject:'GEOGRAPHY',        exp:'14 yrs', uni:'The State University of Zanzibar',             level:'Degree',         hub:null },
+  { id:18, name:'Ramadhan M Abdullah',     school:'Kidongo Chekundu Sec',            phone:'773018903',  subject:'CIVICS',           exp:'10 yrs', uni:'The State University of Zanzibar',             level:'Degree',         hub:null },
+  { id:19, name:'Munir Othman Ali',        school:'Hasnuu Makame Sec',               phone:'656616011',  subject:'PHYSICS',          exp:'7 yrs',  uni:'Summait University',                           level:'Degree',         hub:null },
+  { id:20, name:'Makuhula S. Sheha',       school:'Mwenge Sec School',               phone:'773099234',  subject:'MATHEMATICS',      exp:'18 yrs', uni:'Nkuruma College',                              level:'Diploma',        hub:null },
+  { id:21, name:'Khamis Nuhu Ali',         school:'Tumekuja Sec School',             phone:'774233638',  subject:'ICT',              exp:'9 yrs',  uni:'The State University of Zanzibar',             level:'Masters',        hub:null },
+  { id:22, name:'Salha H. Khamis',         school:'Mtoni Primary School',            phone:'773146004',  subject:'MATHEMATICS',      exp:'18 yrs', uni:'Mtoni',                                        level:'Certificate',    hub:null },
+  { id:23, name:'Yusuf M. Makame',         school:'Kwarara Sec School',              phone:'772801065',  subject:'BIO + CHEMISTRY',  exp:'10 yrs', uni:'The State University of Zanzibar',             level:'Degree',         hub:null },
+  { id:24, name:'Fatma Mohamed Suleiman',  school:'Chumbuni Sec School',             phone:'772340369',  subject:'KISWAHILI',        exp:'6 yrs',  uni:'The State University of Zanzibar',             level:'Degree',         hub:null },
+  { id:25, name:'Ghanil Othman Salum',     school:'Aboud Jumbe Sec',                 phone:'760479898',  subject:'MATH + FINE ART',  exp:'2 yrs',  uni:'Summait University',                           level:'Degree',         hub:null },
+  { id:26, name:'MwanaKhamis A. Malik',    school:'Bububu Sec School',               phone:'777846575',  subject:'KISWAHILI + ENV',  exp:'25 yrs', uni:'Nkuruma College',                              level:'Diploma',        hub:null },
+];
+
+const subjectTagMap = {
+  'MATH':'tag-math','MATHEMATICS':'tag-math','MATH + ICT':'tag-math','MATH + FINE ART':'tag-math',
+  'ICT':'tag-ict',
+  'BIOLOGY':'tag-bio','BIO + CHEMISTRY':'tag-bio','BIOLOGY/NUTRITION':'tag-bio',
+  'PHYSICS':'tag-physics',
+  'KISWAHILI':'tag-kisw','KISWAHILI + ENV':'tag-kisw','ENG + KISW':'tag-kisw',
+  'CIVICS':'tag-civics',
+  'HIST + GEO':'tag-hist','HIST+GEO':'tag-hist','HISTORY':'tag-hist',
+  'GEOGRAPHY':'tag-geo',
+  'CHEMISTRY':'tag-chem',
+  'ENGLISH':'tag-eng',
+};
+
+let activeFilter = 'ALL';
+
+function subjectMatch(subject, filter) {
+  if (filter === 'ALL') return true;
+  if (filter === 'HUB') return false;
+  const s = subject.toUpperCase();
+  if (filter === 'MATH') return s.includes('MATH') || s === 'MATHEMATICS';
+  if (filter === 'BIOLOGY') return s.includes('BIO');
+  if (filter === 'KISWAHILI') return s.includes('KISW');
+  if (filter === 'HISTORY') return s.includes('HIST');
+  if (filter === 'GEOGRAPHY') return s.includes('GEO');
+  if (filter === 'ENGLISH') return s.includes('ENG');
+  if (filter === 'CHEMISTRY') return s.includes('CHEM');
+  return s.includes(filter);
+}
+
+function setFilter(f, btn) {
+  activeFilter = f;
+  document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderList(document.getElementById('searchInput').value);
+}
+
+function getInitials(name) {
+  const parts = name.trim().split(' ').filter(Boolean);
+  if (parts.length >= 2) return (parts[0][0] + parts[parts.length-1][0]).toUpperCase();
+  return name[0].toUpperCase();
+}
+
+function esc(s) {
+  if (!s) return '';
+  return s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+function renderList(search = '') {
+  const q = search.trim().toLowerCase();
+  let filtered = allTeachers.filter(t => {
+    const matchSearch = !q ||
+      t.name.toLowerCase().includes(q) ||
+      t.school.toLowerCase().includes(q) ||
+      t.phone.includes(q) ||
+      t.subject.toLowerCase().includes(q) ||
+      t.uni.toLowerCase().includes(q);
+    const matchFilter = activeFilter === 'HUB'
+      ? !!t.hub
+      : subjectMatch(t.subject, activeFilter);
+    return matchSearch && matchFilter;
+  });
+
+  const uniqueSchools = new Set(allTeachers.map(t => t.school.trim().toLowerCase())).size;
+  document.getElementById('teacherCount').textContent = allTeachers.length;
+  document.getElementById('schoolCount').textContent = uniqueSchools;
+
+  const container = document.getElementById('teacherListContainer');
+  if (filtered.length === 0) {
+    container.innerHTML = `<div class="empty-state">✨ No educator found<br>Try a different keyword</div>`;
+    return;
+  }
+
+  container.innerHTML = filtered.map(t => {
+    const tagClass = subjectTagMap[t.subject] || subjectTagMap[t.subject.toUpperCase()] || '';
+    const hubBtn = t.hub
+      ? `<a href="${esc(t.hub)}" target="_blank" rel="noopener noreferrer" class="website-link" onclick="event.stopPropagation();">🌐 Education Hub</a>`
+      : '';
+    return `
+      <div class="m-card" data-id="${t.id}">
+        <div class="m-avatar">${getInitials(t.name)}</div>
+        <div class="m-details">
+          <div class="m-name">
+            ${esc(t.name)}
+            <span class="m-id">#${t.id}</span>
+          </div>
+          <div class="m-subtext">
+            🏫 ${esc(t.school)}
+          </div>
+          <div class="m-subtext">
+            <span class="pill pill-phone">📞 ${esc(t.phone)}</span>
+            <span class="pill pill-exp">⭐ ${esc(t.exp)}</span>
+            <span class="pill pill-level">${esc(t.level)}</span>
+          </div>
+          <div class="m-subtext">
+            <span class="pill pill-uni">🎓 ${esc(t.uni)}</span>
+          </div>
+          <div class="m-badges">
+            <span class="m-tag ${tagClass}">📖 ${esc(t.subject)}</span>
+            <span class="m-tag" style="background:#EFF5FF;color:#1D4ED8;">✅ VERIFIED</span>
+            ${hubBtn}
+          </div>
+        </div>
+        <div class="m-arrow">›</div>
+      </div>`;
+  }).join('');
+
+  document.querySelectorAll('.m-card').forEach(card => {
+    card.addEventListener('click', e => {
+      if (e.target.closest('.website-link')) return;
+      const t = allTeachers.find(x => x.id == card.dataset.id);
+      if (!t) return;
+      const msg = [
+        `📌 ${t.name}  (#${t.id})`,
+        `🏫 ${t.school}`,
+        `📖 ${t.subject}`,
+        `📞 ${t.phone}`,
+        `⭐ Experience: ${t.exp}`,
+        `🎓 ${t.uni} — ${t.level}`,
+        t.hub ? `🌐 Hub: ${t.hub}` : '🌐 Hub: not yet published'
+      ].join('\n');
+      alert(msg);
+    });
+  });
+}
+
+let debounce;
+document.getElementById('searchInput').addEventListener('input', e => {
+  clearTimeout(debounce);
+  debounce = setTimeout(() => renderList(e.target.value), 160);
+});
+
+['navStations','navCourse','navProfile'].forEach(id => {
+  document.getElementById(id).addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    e.currentTarget.classList.add('active');
+    const msgs = {
+      navStations: '🏫 Stations Hub — 26 verified teachers loaded.',
+      navCourse:   '📚 AI Course Library — Empowering Zanzibar educators with AI tools.',
+      navProfile:  '👤 Admin: PI LI | SAY CLASS Ecosystem | AI Transformation Hub'
+    };
+    alert(msgs[id]);
+  });
+});
+
+renderList();
+</script>
+</body>
+</html>
