@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAY Class · Online Tutoring Survey · Dodoso la Mafunzo ya Mtandaoni</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f4f0;color:#1a1a1a;min-height:100vh;}
+.page{max-width:700px;margin:0 auto;padding:1.5rem 1.1rem 3rem;}
+
+.header{background:#1D9E75;border-radius:14px;padding:1.5rem 1.5rem 1.25rem;margin-bottom:1.5rem;color:#fff;}
+.header-top{display:flex;align-items:center;gap:12px;margin-bottom:0.75rem;}
+.logo{width:42px;height:42px;border-radius:10px;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.logo svg{width:24px;height:24px;}
+.header-title{font-size:18px;font-weight:700;line-height:1.3;}
+.header-sub{font-size:12px;opacity:0.85;margin-top:2px;}
+.header-meta{font-size:12px;opacity:0.75;margin-top:0.75rem;padding-top:0.75rem;border-top:1px solid rgba(255,255,255,0.25);line-height:1.7;}
+
+.context-box{background:#fff;border:1px solid #e0e0d8;border-radius:12px;padding:1.1rem 1.25rem;margin-bottom:1.25rem;}
+.context-label{font-size:11px;font-weight:700;color:#0F6E56;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;}
+.context-text{font-size:13px;color:#555;line-height:1.8;}
+.context-text b{color:#1a1a1a;}
+
+.tab-bar{display:flex;gap:6px;margin-bottom:1.25rem;}
+.tab{flex:1;text-align:center;padding:10px 8px;border-radius:10px;border:1px solid #ddd;background:#fff;font-size:13px;font-weight:500;cursor:pointer;color:#888;transition:all 0.15s;}
+.tab.on{background:#1D9E75;color:#fff;border-color:#1D9E75;}
+
+.section{margin-bottom:1.25rem;}
+.section-label{font-size:11px;font-weight:700;color:#0F6E56;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.section-label::after{content:'';flex:1;height:1px;background:#e8e8e0;}
+
+.card{background:#fff;border:1px solid #e0e0d8;border-radius:12px;padding:1.1rem 1.25rem;margin-bottom:10px;}
+.q-num{font-size:11px;font-weight:700;color:#aaa;margin-bottom:5px;}
+.q-text{font-size:14px;font-weight:600;color:#1a1a1a;line-height:1.55;margin-bottom:4px;}
+.q-sub{font-size:12px;color:#888;margin-bottom:12px;line-height:1.6;}
+.q-sw{font-size:12px;color:#5DCAA5;margin-bottom:12px;line-height:1.6;font-style:italic;}
+
+.options{display:flex;flex-direction:column;gap:8px;}
+.opt{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border:1px solid #e8e8e0;border-radius:9px;cursor:pointer;transition:all 0.12s;background:#fafaf8;}
+.opt:hover{border-color:#5DCAA5;background:#f0faf6;}
+.opt input[type=radio],.opt input[type=checkbox]{margin-top:2px;flex-shrink:0;accent-color:#1D9E75;}
+.opt-label{font-size:13px;color:#333;line-height:1.5;}
+.opt-label small{display:block;font-size:11px;color:#999;margin-top:1px;}
+
+.options-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+@media(max-width:420px){.options-row{grid-template-columns:1fr;}}
+
+.scale-wrap{display:flex;flex-direction:column;gap:8px;}
+.scale-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.scale-nums{display:flex;gap:6px;flex-wrap:wrap;}
+.scale-num{width:38px;height:38px;border-radius:8px;border:1px solid #ddd;background:#fafaf8;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:500;cursor:pointer;color:#666;transition:all 0.12s;}
+.scale-num:hover{border-color:#1D9E75;color:#1D9E75;}
+.scale-num.on{background:#1D9E75;border-color:#1D9E75;color:#fff;}
+.scale-labels{display:flex;justify-content:space-between;font-size:11px;color:#aaa;margin-top:4px;}
+
+textarea{width:100%;border:1px solid #ddd;border-radius:9px;padding:10px 12px;font-size:13px;color:#333;font-family:inherit;resize:vertical;min-height:80px;background:#fafaf8;transition:border-color 0.15s;}
+textarea:focus{outline:none;border-color:#1D9E75;}
+input[type=text]{width:100%;border:1px solid #ddd;border-radius:9px;padding:9px 12px;font-size:13px;color:#333;font-family:inherit;background:#fafaf8;transition:border-color 0.15s;}
+input[type=text]:focus{outline:none;border-color:#1D9E75;}
+
+.notice{background:#FAEEDA;border-radius:10px;padding:11px 14px;font-size:12px;color:#633806;line-height:1.7;margin-bottom:10px;}
+.notice b{color:#412402;}
+
+.submit-btn{width:100%;padding:14px;border-radius:12px;background:#1D9E75;color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;margin-top:0.5rem;transition:background 0.15s;}
+.submit-btn:hover{background:#0F6E56;}
+
+.thankyou{display:none;background:#E1F5EE;border-radius:14px;padding:2rem 1.5rem;text-align:center;}
+.thankyou h3{font-size:18px;font-weight:700;color:#0F6E56;margin-bottom:8px;}
+.thankyou p{font-size:14px;color:#555;line-height:1.7;}
+
+.form-hidden{display:none;}
+
+.footer{margin-top:2rem;text-align:center;font-size:11px;color:#bbb;line-height:1.8;}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="header-top">
+      <div class="logo">
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="white" stroke-width="1.8"/><path d="M8 12l3 3 5-5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div>
+        <div class="header-title">SAY Class · Online Tutoring Survey</div>
+        <div class="header-sub">课外在线辅导需求问卷 · Dodoso la Mafunzo ya Mtandaoni</div>
+      </div>
+    </div>
+    <div class="header-meta">
+      📅 Week 1 · April 2026 &nbsp;|&nbsp; 🎯 37 registered teachers · Walimu 37 waliojisajili<br>
+      ⏰ From this week, on-site training is <b>Saturdays only</b> · Mafunzo ya ana kwa ana: <b>Jumamosi tu</b>
+    </div>
+  </div>
+
+  <div class="context-box">
+    <div class="context-label">昨晚辅导回顾 · Last Night's Session · Muhtasari wa Usiku wa Jana</div>
+    <div class="context-text">
+      昨晚（周四晚7点至深夜），<b>教授、员工与5位学员</b>通过 Zoom 进行了在线辅导，内容涵盖：<b>网站内容更新、SAY Class 中控链接、建立学生档案</b>。Amani 提出了3个高质量实用问题。共37位注册学员，仅5位参加了本次在线练习。<br><br>
+      Last Thursday evening (7pm–late), the professor, staff, and <b>5 teachers</b> joined Zoom to practise <b>website updating, control-centre linking, and student profile creation</b>. Amani raised 3 excellent practical questions. Only 5 of 37 registered teachers attended.<br><br>
+      <span style="color:#5DCAA5;">Jana usiku (Alhamisi, saa 1 usiku hadi usiku wa manane), profesa, wafanyakazi na <b>walimu 5</b> walishiriki Zoom kwa mazoezi ya <b>usasishaji wa tovuti, kuunganisha SAY Class, na kuunda faili za wanafunzi</b>. Amani aluliza maswali 3 ya vitendo. Walimu 5 tu kati ya 37 walioshiriki.</span>
+    </div>
+  </div>
+
+  <div class="tab-bar">
+    <button class="tab on" onclick="showForm('pre',this)">📋 辅导前问卷<br><small>Pre-Survey · Kabla</small></button>
+    <button class="tab" onclick="showForm('post',this)">✅ 辅导后问卷<br><small>Post-Survey · Baada</small></button>
+  </div>
+
+  <!-- ===== PRE-SURVEY ===== -->
+  <div id="form-pre">
+
+    <div class="notice">
+      <b>填写说明 · Instructions · Maelekezo:</b> 此问卷帮助我们了解你的在线辅导需求与条件，请如实填写，用于改进课程支持计划。<br>
+      This survey helps us understand your needs for online tutoring. Please answer honestly — results shape the support plan.<br>
+      <span style="color:#854F0B;">Dodoso hili linatusaidia kuelewa mahitaji yako ya mafunzo ya mtandaoni. Jibu kwa uaminifu.</span>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Part A · 基本信息 · Taarifa za Msingi</div>
+
+      <div class="card">
+        <div class="q-num">Q1</div>
+        <div class="q-text">Your name & school · 你的姓名与学校</div>
+        <div class="q-sw">Jina lako na shule</div>
+        <input type="text" placeholder="e.g. Pili A. Juma · Kama Sec School" id="pre-name">
+      </div>
+
+      <div class="card">
+        <div class="q-num">Q2</div>
+        <div class="q-text">Did you join last night's Zoom session? · 你参加了昨晚的 Zoom 辅导吗？</div>
+        <div class="q-sw">Je, ulijiunga na kikao cha Zoom usiku wa jana?</div>
+        <div class="options">
+          <label class="opt"><input type="radio" name="pre-zoom" value="yes"><span class="opt-label">✅ Yes, I joined · 是的，我参加了 <small>Ndiyo, nilijiunga</small></span></label>
+          <label class="opt"><input type="radio" name="pre-zoom" value="no-device"><span class="opt-label">📵 No — I had no device / internet · 没有，没有设备或网络 <small>Hapana — sikuwa na kifaa/mtandao</small></span></label>
+          <label class="opt"><input type="radio" name="pre-zoom" value="no-time"><span class="opt-label">⏰ No — I was not free at that time · 没有，当时没空 <small>Hapana — nilikuwa na shughuli</small></span></label>
+          <label class="opt"><input type="radio" name="pre-zoom" value="no-know"><span class="opt-label">❓ No — I didn't know about it · 没有，我不知道这件事 <small>Hapana — sikujua</small></span></label>
+          <label class="opt"><input type="radio" name="pre-zoom" value="no-other"><span class="opt-label">💬 No — other reason · 没有，其他原因 <small>Hapana — sababu nyingine</small></span></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Part B · 设备与网络条件 · Vifaa na Mtandao</div>
+
+      <div class="card">
+        <div class="q-num">Q3</div>
+        <div class="q-text">What device do you have for online learning? · 你有什么设备用于在线学习？</div>
+        <div class="q-sw">Una kifaa gani cha kujifunza mtandaoni? (Chagua vyote vinavyokufaa)</div>
+        <div class="q-sub">Select all that apply · 多选</div>
+        <div class="options">
+          <label class="opt"><input type="checkbox" name="pre-device" value="smartphone"><span class="opt-label">📱 Smartphone · 智能手机 <small>Simu ya kisasa</small></span></label>
+          <label class="opt"><input type="checkbox" name="pre-device" value="laptop"><span class="opt-label">💻 Laptop · 笔记本电脑 <small>Kompyuta ndogo</small></span></label>
+          <label class="opt"><input type="checkbox" name="pre-device" value="tablet"><span class="opt-label">📲 Tablet / iPad <small>Kompyuta kibao</small></span></label>
+          <label class="opt"><input type="checkbox" name="pre-device" value="none"><span class="opt-label">❌ No personal device · 没有个人设备 <small>Sina kifaa changu</small></span></label>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="q-num">Q4</div>
+        <div class="q-text">How is your internet access at home? · 你家里的网络情况如何？</div>
+        <div class="q-sw">Hali ya mtandao nyumbani kwako ni ipi?</div>
+        <div class="options">
+          <label class="opt"><input type="radio" name="pre-net" value="good"><span class="opt-label">🟢 Stable WiFi / good data · 稳定 WiFi 或足够流量 <small>WiFi thabiti / data ya kutosha</small></span></label>
+          <label class="opt"><input type="radio" name="pre-net" value="limited"><span class="opt-label">🟡 Limited data — I manage carefully · 流量有限，需要省着用 <small>Data kidogo — ninasimamiwa</small></span></label>
+          <label class="opt"><input type="radio" name="pre-net" value="poor"><span class="opt-label">🔴 Poor or no connection at home · 家里网络很差或没有 <small>Hakuna mtandao mzuri nyumbani</small></span></label>
+          <label class="opt"><input type="radio" name="pre-net" value="school"><span class="opt-label">🏫 Only at school · 只有在学校才有 <small>Mtandao shuleni tu</small></span></label>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="q-num">Q5</div>
+        <div class="q-text">Have you successfully published your GitHub teaching page? · 你是否已成功发布你的 GitHub 教学网页？</div>
+        <div class="q-sw">Je, umefanikiwa kuchapisha ukurasa wako wa kufundishia GitHub?</div>
+        <div class="options">
+          <label class="opt"><input type="radio" name="pre-github" value="yes-working"><span class="opt-label">✅ Yes — my page is live · 是的，我的网页已上线<br><small>Ndiyo — ukurasa wangu uko mtandaoni</small></span></label>
+          <label class="opt"><input type="radio" name="pre-github" value="yes-issues"><span class="opt-label">⚠️ Published but has problems · 发布了但有问题<br><small>Nimechapisha lakini kuna matatizo</small></span></label>
+          <label class="opt"><input type="radio" name="pre-github" value="no-progress"><span class="opt-label">🔄 Still working on it · 还在进行中<br><small>Bado ninafanya kazi</small></span></label>
+          <label class="opt"><input type="radio" name="pre-github" value="no-stuck"><span class="opt-label">❌ Stuck — I need help to start · 卡住了，需要帮助 <small>Nimekwama — ninahitaji msaada</small></span></label>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="q-num">Q5b</div>
+        <div class="q-text">If you have a GitHub page URL, paste it here · 如果你有 GitHub 网址，请粘贴在这里</div>
+        <div class="q-sw">Kama una URL ya GitHub, iweke hapa</div>
+        <input type="text" placeholder="e.g. https://yourname.github.io/teaching/" id="pre-url">
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Part C · 在线辅导需求 · Mahitaji ya Mafunzo ya Mtandaoni</div>
+
+      <div class="card">
+        <div class="q-num">Q6</div>
+        <div class="q-text">Do you want to join future online tutoring sessions on Zoom? · 你希望参加未来的 Zoom 在线辅导吗？</div>
+        <div class="q-sw">Je, unataka kujiunga na vikao vya Zoom vya mafunzo ya ziada?</div>
+        <div class="options">
+          <label class="opt"><input type="radio" name="pre-want" value="yes-def"><span class="opt-label">🙋 Yes, definitely · 是的，非常希望 <small>Ndiyo, bila shaka</small></span></label>
+          <label class="opt"><input type="radio" name="pre-want" value="yes-if"><span class="opt-label">🤔 Yes, if the time suits me · 是的，如果时间合适 <small>Ndiyo, ikiwa muda utanifaa</small></span></label>
+          <label class="opt"><input type="radio" name="pre-want" value="maybe"><span class="opt-label">❓ Not sure yet · 还不确定 <small>Sijui bado</small></span></label>
+          <label class="opt"><input type="radio" name="pre-want" value="no"><span class="opt-label">🚫 No — I prefer Saturday only · 不，我只参加周六课 <small>Hapana — nipendelea Jumamosi tu</small></span></label>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="q-num">Q7</div>
+        <div class="q-text">How many times per week would you like online tutoring? · 你希望每周几次在线辅导？</div>
+        <div class="q-sw">Ungependa mafunzo ya mtandaoni mara ngapi kwa wiki?</div>
+        <div class="options options-row">
+          <label class="opt"><input type="radio" name="pre-freq" value="1"><span class="opt-label">1× per week<br><small>每周1次 / mara 1</small></span></label>
+          <label class="opt"><input type="radio" name="pre-freq" value="2"><span class="opt-label">2× per week<br><small>每周2次 / mara 2</small></span></label>
+          <label class="opt"><input type="radio" name="pre-freq" value="3+"><span class="opt-label">3+ per week<br><small>每周3次+ / mara 3+</small></span></label>
+          <label class="opt"><input type="radio" name="pre-freq" value="flexible"><span class="opt-label">As needed<br><small>按需 / kama inavyohitajika</small></span></label>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="q-num">Q8</div>
+        <div class="q-text">What time works best for you? · 你最方便的时间段是？</div>
+        <div class="q-sub">Select all that apply · 多选 · Chagua vyote vinavyokufaa</div>
+        <div class="options">
+          <label class="opt"><input type="checkbox" name="pre-time" value="morning"><span class="opt-label">🌅 Morning 7–9am · 早上7–9点 <small>Asubuhi saa 1–3</small></span></label>
+          <label class="opt"><input type="checkbox" name="pre-time" value="midday"><span class="opt-label">☀️ Midday 12–2pm · 中午12–2点 <small>Mchana saa 6–8</small></span></label>
+          <label class="opt"><input type="checkbox" name="pre-time" value="afternoon"><span class="opt-label">🌤 Afternoon 3–5pm · 下午3–5点 <small>Alasiri saa 9–11</small></span></label>
+          <label class="opt"><input type="checkbox" name="pre-time" value="evening"><span class="opt-label">🌙 Evening 7–9pm · 晚上7–9点 <small>Jioni saa 1–3 usiku</small></span></label>
+          <label class="opt"><input type="checkbox" name="pre-time" value="saturday"><span class="opt-label">📅 Saturday (on-site day) · 周六（到校日） <small>Jumamosi (siku ya shule)</small></span></label>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="q-num">Q9</div>
+        <div class="q-text">Which topics do you most need help with? · 你最需要哪方面的帮助？</div>
+        <div class="q-sub">Select all that apply · 多选 · Chagua vyote vinavyokufaa</div>
+        <div class="options">
+          <label class="opt"><input type="checkbox" name="pre-topic" value="github-update"><span class="opt-label">🔄 Updating my GitHub website · 更新我的 GitHub 网站 <small>Kusasisha tovuti yangu ya GitHub</small></span></label>
+          <label class="opt"><input type="checkbox" name="pre-topic" value="sayclass-link"><span class="opt-label">🔗 Linking to SAY Class control centre · 链接 SAY Class 中控系统 <small>Kuunganisha na kituo cha SAY Class</small></span></label>
+          <label class="opt"><input type="checkbox" name="pre-topic" value="student-profile"><span class="opt-label">👤 Creating student profiles · 建立学生档案 <small>Kuunda faili za wanafunzi</small></span></label>
+          <label class="opt"><input type="checkbox" name="pre-topic" value="ai-prompt"><span class="opt-label">🤖 Writing AI prompts · 写 AI 提示词 <small>Kuandika maagizo ya AI</small></span></label>
+          <label class="opt"><input type="checkbox" name="pre-topic" value="html-edit"><span class="opt-label">💻 Editing HTML / webpage content · 编辑 HTML 网页内容 <small>Kuhariri maudhui ya HTML</small></span></label>
+          <label class="opt"><input type="checkbox" name="pre-topic" value="zoom-use"><span class="opt-label">📹 Using Zoom / online tools · 使用 Zoom 等在线工具 <small>Kutumia Zoom / zana za mtandaoni</small></span></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Part D · 技术自信与障碍 · Ujasiri wa Teknolojia</div>
+
+      <div class="card">
+        <div class="q-num">Q10</div>
+        <div class="q-text">How confident are you right now with updating your website independently? · 你现在独立更新网站的信心有多少？</div>
+        <div class="q-sw">Una ujasiri gani wa kusasisha tovuti yako peke yako?</div>
+        <div class="scale-wrap">
+          <div class="scale-row">
+            <div class="scale-nums" id="pre-scale-conf">
+              <div class="scale-num" onclick="setScale('pre-scale-conf',this,1)">1</div>
+              <div class="scale-num" onclick="setScale('pre-scale-conf',this,2)">2</div>
+              <div class="scale-num" onclick="setScale('pre-scale-conf',this,3)">3</div>
+              <div class="scale-num" onclick="setScale('pre-scale-conf',this,4)">4</div>
+              <div class="scale-num" onclick="setScale('pre-scale-conf',this,5)">5</div>
+              <div class="scale-num" onclick="setScale('pre-scale-conf',this,6)">6</div>
+              <div class="scale-num" onclick="setScale('pre-scale-conf',this,7)">7</div>
+              <div class="scale-num" onclick="setScale('pre-scale-conf',this,8)">8</div>
+              <div class="scale-num" onclick="setScale('pre-scale-conf',this,9)">9</div>
+              <div class="scale-num" onclick="setScale('pre-scale-conf',this,10)">10</div>
+            </div>
+          </div>
+          <div class="scale-labels"><span>1 = 完全没信心 / Not at all</span><span>10 = 很有信心 / Very confident</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="q-num">Q11</div>
+        <div class="q-text">What is your biggest obstacle to joining online sessions? · 你参加在线辅导的最大障碍是什么？</div>
+        <div class="q-sw">Kizuizi kikubwa zaidi cha kushiriki vikao vya mtandaoni ni kipi?</div>
+        <div class="options">
+          <label class="opt"><input type="radio" name="pre-barrier" value="internet"><span class="opt-label">📡 Poor / no internet · 网络差或没有 <small>Mtandao mbaya / hauna</small></span></label>
+          <label class="opt"><input type="radio" name="pre-barrier" value="device"><span class="opt-label">📵 No suitable device · 没有合适的设备 <small>Sina kifaa kinachofaa</small></span></label>
+          <label class="opt"><input type="radio" name="pre-barrier" value="time"><span class="opt-label">⏰ Time conflict (work / family) · 时间冲突（工作/家庭）<small>Mgongano wa muda</small></span></label>
+          <label class="opt"><input type="radio" name="pre-barrier" value="confidence"><span class="opt-label">😟 Not confident enough in technology · 对技术没有信心 <small>Sijisikii ujasiri wa kutosha</small></span></label>
+          <label class="opt"><input type="radio" name="pre-barrier" value="language"><span class="opt-label">🌐 Language barrier (English / Chinese) · 语言障碍 <small>Kizuizi cha lugha</small></span></label>
+          <label class="opt"><input type="radio" name="pre-barrier" value="none"><span class="opt-label">✅ No major obstacle · 没有大障碍 <small>Hakuna kizuizi kikubwa</small></span></label>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="q-num">Q12</div>
+        <div class="q-text">Any message for the professor or tutoring team? · 你想对教授或辅导团队说什么？</div>
+        <div class="q-sw">Una ujumbe wowote kwa profesa au timu ya mafunzo?</div>
+        <textarea placeholder="Write freely / 随意填写 / Andika huru..." id="pre-message"></textarea>
+      </div>
+    </div>
+
+    <button class="submit-btn" onclick="submitForm('pre')">✅ Submit Pre-Survey · 提交辅导前问卷 · Wasilisha Dodoso</button>
+    <div class="thankyou" id="thanks-pre">
+      <h3>Asante sana! 谢谢！ Thank you!</h3>
+      <p>Your response has been recorded · 你的回答已记录 · Majibu yako yamehifadhiwa<br><br>
+      📅 Remember: on-site training is <b>Saturdays only</b> from now on.<br>
+      Online tutoring sessions will be arranged based on your responses.<br><br>
+      SAY Class team will contact you via WhatsApp · 团队将通过 WhatsApp 联系你</p>
+    </div>
+  </div>
+
+  <!-- ===== POST-SURVEY ===== -->
+  <div id="form-post" class="form-hidden">
+
+    <div class="notice">
+      <b>填写说明 · Instructions:</b> 本问卷在参加在线辅导之后填写，帮助我们评估辅导效果并持续改进。<br>
+      Complete this survey <b>after</b> attending an online tutoring session. Your feedback directly improves future sessions.<br>
+      <span style="color:#854F0B;">Jaza dodoso hili <b>baada ya</b> kikao cha mafunzo ya mtandaoni. Maoni yako yanaboresha vikao vijavyo.</span>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Part A · 出勤确认 · Uthibitisho wa Mahudhurio</div>
+
+      <div class="card">
+        <div class="q-num">Q1</div>
+        <div class="q-text">Your name & school · 你的姓名与学校</div>
+        <div class="q-sw">Jina lako na shule</div>
+        <input type="text" placeholder="e.g. Pili A. Juma · Kama Sec School" id="post-name">
+      </div>
+
+      <div class="card">
+        <div class="q-num">Q2</div>
+        <div class="q-text">Which session did you attend? · 你参加了哪次辅导？</div>
+        <div class="q-sw">Ulihudhuria kikao gani?</div>
+        <div class="options">
+          <label class="opt"><input type="radio" name="post-session" value="thurs-night"><span class="opt-label">🌙 Thursday night session (Week 1) · 周四晚间辅导（第一周）<small>Kikao cha usiku wa Alhamisi (Wiki 1)</small></span></label>
+          <label class="opt"><input type="radio" name="post-session" value="other"><span class="opt-label">📅 Other session · 其他场次 <small>Kikao kingine</small></span></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Part B · 技术成果 · Matokeo ya Teknolojia</div>
+
+      <div class="card">
+        <div class="q-num">Q3</div>
+        <div class="q-text">After the session, what did you successfully do? · 辅导后，你成功完成了哪些操作？</div>
+        <div class="q-sub">Select all that apply · 多选 · Chagua vyote</div>
+        <div class="options">
+          <label class="opt"><input type="checkbox" name="post-achieved" value="update-site"><span class="opt-label">🔄 Updated my website content · 更新了我的网站内容 <small>Nilisasisha maudhui ya tovuti yangu</small></span></label>
+          <label class="opt"><input type="checkbox" name="post-achieved" value="link-sayclass"><span class="opt-label">🔗 Linked my page to SAY Class · 链接到了 SAY Class <small>Niliiunganisha ukurasa wangu na SAY Class</small></span></label>
+          <label class="opt"><input type="checkbox" name="post-achieved" value="student-profile"><span class="opt-label">👤 Created a student profile · 建立了学生档案 <small>Niliunda faili la mwanafunzi</small></span></label>
+          <label class="opt"><input type="checkbox" name="post-achieved" value="understood-logic"><span class="opt-label">💡 Understood the logic better · 理解了操作逻辑 <small>Niligundua mantiki vizuri zaidi</small></span></label>
+          <label class="opt"><input type="checkbox" name="post-achieved" value="nothing"><span class="opt-label">😔 I struggled — couldn't complete anything · 遇到了困难，没能完成 <small>Nilikuwa na ugumu — sikuweza kukamilisha</small></span></label>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="q-num">Q4</div>
+        <div class="q-text">Paste your updated GitHub page URL (if ready) · 粘贴你更新后的 GitHub 网址（如果有）</div>
+        <div class="q-sw">Weka URL ya GitHub iliyosasishwa (kama ipo)</div>
+        <input type="text" placeholder="https://yourname.github.io/..." id="post-url">
+      </div>
+
+      <div class="card">
+        <div class="q-num">Q5</div>
+        <div class="q-text">How many times did internet problems stop you during the session? · 本次辅导中，你因网络问题停下了几次？</div>
+        <div class="q-sw">Mara ngapi mtandao uliuzuia wakati wa kikao?</div>
+        <div class="options options-row">
+          <label class="opt"><input type="radio" name="post-interrupt" value="0"><span class="opt-label">0 — No issues<br><small>没有问题 / Hakuna</small></span></label>
+          <label class="opt"><input type="radio" name="post-interrupt" value="1-2"><span class="opt-label">1–2 times<br><small>1–2次 / mara 1–2</small></span></label>
+          <label class="opt"><input type="radio" name="post-interrupt" value="3-5"><span class="opt-label">3–5 times<br><small>3–5次 / mara 3–5</small></span></label>
+          <label class="opt"><input type="radio" name="post-interrupt" value="5+"><span class="opt-label">5+ times<br><small>5次以上 / zaidi ya 5</small></span></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Part C · 辅导质量评估 · Tathmini ya Ubora</div>
+
+      <div class="card">
+        <div class="q-num">Q6</div>
+        <div class="q-text">How useful was this tutoring session? · 本次辅导对你有多大帮助？</div>
+        <div class="q-sw">Kikao hiki cha mafunzo kilikuwa na manufaa kiasi gani?</div>
+        <div class="scale-wrap">
+          <div class="scale-row">
+            <div class="scale-nums" id="post-scale-useful">
+              <div class="scale-num" onclick="setScale('post-scale-useful',this,1)">1</div>
+              <div class="scale-num" onclick="setScale('post-scale-useful',this,2)">2</div>
+              <div class="scale-num" onclick="setScale('post-scale-useful',this,3)">3</div>
+              <div class="scale-num" onclick="setScale('post-scale-useful',this,4)">4</div>
+              <div class="scale-num" onclick="setScale('post-scale-useful',this,5)">5</div>
+              <div class="scale-num" onclick="setScale('post-scale-useful',this,6)">6</div>
+              <div class="scale-num" onclick="setScale('post-scale-useful',this,7)">7</div>
+              <div class="scale-num" onclick="setScale('post-scale-useful',this,8)">8</div>
+              <div class="scale-num" onclick="setScale('post-scale-useful',this,9)">9</div>
+              <div class="scale-num" onclick="setScale('post-scale-useful',this,10)">10</div>
+            </div>
+          </div>
+          <div class="scale-labels"><span>1 = 没有帮助 / Not useful</span><span>10 = 非常有帮助 / Very useful</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="q-num">Q7</div>
+        <div class="q-text">Your technical confidence AFTER the session (vs before) · 辅导后你的技术信心（与之前相比）</div>
+        <div class="q-sw">Ujasiri wako wa teknolojia BAADA ya kikao (ukilinganisha na kabla)</div>
+        <div class="options">
+          <label class="opt"><input type="radio" name="post-confidence" value="much-more"><span class="opt-label">🚀 Much more confident now · 现在信心大增 <small>Nina ujasiri zaidi sana sasa</small></span></label>
+          <label class="opt"><input type="radio" name="post-confidence" value="slightly-more"><span class="opt-label">📈 Slightly more confident · 稍微有信心了 <small>Nina ujasiri kidogo zaidi</small></span></label>
+          <label class="opt"><input type="radio" name="post-confidence" value="same"><span class="opt-label">➡️ About the same · 和之前差不多 <small>Karibu sawa na kabla</small></span></label>
+          <label class="opt"><input type="radio" name="post-confidence" value="more-confused"><span class="opt-label">😕 More confused now · 反而更困惑了 <small>Nina wasiwasi zaidi sasa</small></span></label>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="q-num">Q8</div>
+        <div class="q-text">Which part of the session helped you most? · 哪部分辅导对你最有帮助？</div>
+        <div class="q-sw">Sehemu ipi ya kikao ilikufaidia zaidi?</div>
+        <div class="options">
+          <label class="opt"><input type="radio" name="post-best" value="website-update"><span class="opt-label">🔄 Website content updating · 网站内容更新 <small>Kusasisha maudhui ya tovuti</small></span></label>
+          <label class="opt"><input type="radio" name="post-best" value="sayclass-link"><span class="opt-label">🔗 SAY Class control-centre linking · SAY Class 中控链接 <small>Kuunganisha SAY Class</small></span></label>
+          <label class="opt"><input type="radio" name="post-best" value="student-record"><span class="opt-label">👤 Building student profiles · 建立学生档案 <small>Kuunda faili za wanafunzi</small></span></label>
+          <label class="opt"><input type="radio" name="post-best" value="qa"><span class="opt-label">❓ The Q&A (Amani's questions etc.) · 问答环节 <small>Maswali na majibu (kama ya Amani)</small></span></label>
+          <label class="opt"><input type="radio" name="post-best" value="general"><span class="opt-label">💬 General guidance · 整体辅导 <small>Mwongozo wa jumla</small></span></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Part D · 下一步计划 · Mpango Ujao</div>
+
+      <div class="card">
+        <div class="q-num">Q9</div>
+        <div class="q-text">What do you want to learn in the NEXT online session? · 下次在线辅导你希望学什么？</div>
+        <div class="q-sw">Ungependa kujifunza nini katika kikao KINACHOFUATA?</div>
+        <div class="options">
+          <label class="opt"><input type="radio" name="post-next" value="images"><span class="opt-label">🖼 Adding images to my page · 往网页加图片 <small>Kuongeza picha kwenye ukurasa</small></span></label>
+          <label class="opt"><input type="radio" name="post-next" value="quiz"><span class="opt-label">📝 Adding interactive quizzes · 加入自动批改测试题 <small>Kuongeza maswali ya kujijaribu</small></span></label>
+          <label class="opt"><input type="radio" name="post-next" value="ai-content"><span class="opt-label">🤖 Generating more AI teaching content · 用 AI 生成更多教学内容 <small>Kutengeneza maudhui zaidi ya AI</small></span></label>
+          <label class="opt"><input type="radio" name="post-next" value="repeat"><span class="opt-label">🔁 Repeat today's content — I need more practice · 复习今天的内容 <small>Kurudia maudhui ya leo</small></span></label>
+          <label class="opt"><input type="radio" name="post-next" value="other"><span class="opt-label">💬 Other (write below) · 其他 <small>Nyingine (andika chini)</small></span></label>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="q-num">Q10</div>
+        <div class="q-text">Would you recommend online tutoring to a colleague who didn't join? · 你会推荐没有参加的同事也来参加吗？</div>
+        <div class="q-sw">Je, ungempendekeza mwenzako asiyejiunga kujiunga?</div>
+        <div class="options options-row">
+          <label class="opt"><input type="radio" name="post-recommend" value="yes"><span class="opt-label">👍 Yes · 是的<br><small>Ndiyo</small></span></label>
+          <label class="opt"><input type="radio" name="post-recommend" value="maybe"><span class="opt-label">🤷 Maybe · 也许<br><small>Labda</small></span></label>
+          <label class="opt"><input type="radio" name="post-recommend" value="no"><span class="opt-label">👎 No · 不<br><small>Hapana</small></span></label>
+          <label class="opt"><input type="radio" name="post-recommend" value="already"><span class="opt-label">✅ Already did · 已经推荐了<br><small>Nimeshasema</small></span></label>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="q-num">Q11</div>
+        <div class="q-text">Any feedback or message for the professor / tutoring team? · 对教授或辅导团队有什么反馈或建议？</div>
+        <div class="q-sw">Una maoni au ujumbe wowote kwa profesa / timu ya mafunzo?</div>
+        <textarea placeholder="Write freely / 随意填写 / Andika huru..." id="post-message"></textarea>
+      </div>
+    </div>
+
+    <button class="submit-btn" onclick="submitForm('post')">✅ Submit Post-Survey · 提交辅导后问卷 · Wasilisha Dodoso</button>
+    <div class="thankyou" id="thanks-post">
+      <h3>Asante sana! 谢谢！ Thank you!</h3>
+      <p>Your feedback has been recorded · 你的反馈已记录 · Maoni yako yamehifadhiwa<br><br>
+      The SAY Class team will review all responses and arrange the next online tutoring session via WhatsApp.<br>
+      SAY Class 团队将审阅所有回答，并通过 WhatsApp 安排下次在线辅导。<br><br>
+      📅 <b>See you Saturday! · 周六见！ · Tutaonana Jumamosi!</b></p>
+    </div>
+  </div>
+
+  <div class="footer">
+    SAY Class · AI Education Project · Zanzibar, Tanzania · 2026<br>
+    Designed for 37 registered teachers · Imeundwa kwa walimu 37 waliojisajili
+  </div>
+
+</div>
+
+<script>
+function showForm(f, btn) {
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('form-pre').classList.toggle('form-hidden', f !== 'pre');
+  document.getElementById('form-post').classList.toggle('form-hidden', f !== 'post');
+}
+
+function setScale(groupId, el, val) {
+  const group = document.getElementById(groupId);
+  group.querySelectorAll('.scale-num').forEach(n => n.classList.remove('on'));
+  el.classList.add('on');
+  el.dataset.val = val;
+}
+
+function submitForm(type) {
+  const nameEl = document.getElementById(type + '-name');
+  if (!nameEl.value.trim()) {
+    alert('Please enter your name first · 请先填写你的姓名 · Tafadhali weka jina lako kwanza');
+    return;
+  }
+  const formEl = document.getElementById('form-' + type);
+  formEl.querySelectorAll('.card, .notice').forEach(el => { el.style.opacity = '0.4'; el.style.pointerEvents = 'none'; });
+  formEl.querySelector('.submit-btn').style.display = 'none';
+  document.getElementById('thanks-' + type).style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
