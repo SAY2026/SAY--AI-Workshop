@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAY Foundation AI Workshop · My Subject, My App · April 10–11, 2026</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --green:#1D9E75;--green-d:#0F6E56;--green-l:#E1F5EE;--green-ll:#f0faf6;
+  --amber:#BA7517;--amber-l:#FAEEDA;
+  --purple:#534AB7;--purple-l:#EEEDFE;
+  --coral:#993C1D;--coral-l:#FAECE7;
+  --gray:#5F5E5A;--gray-l:#F1EFE8;
+  --text:#1a1a1a;--text2:#555;--text3:#999;
+  --border:#e0e0d8;--bg:#f5f5f0;--white:#fff;
+  --r:12px;--rs:8px;
+}
+body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;}
+a{color:var(--green);text-decoration:none;}
+a:hover{text-decoration:underline;}
+
+.page{max-width:860px;margin:0 auto;padding:0 1rem 4rem;}
+
+.hero{background:var(--green);color:#fff;padding:2.5rem 2rem 2rem;border-radius:0 0 20px 20px;margin-bottom:2rem;}
+.hero-eyebrow{font-size:12px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.8;margin-bottom:10px;}
+.hero-title{font-size:clamp(22px,5vw,36px);font-weight:700;line-height:1.2;margin-bottom:8px;}
+.hero-sub{font-size:14px;opacity:0.85;margin-bottom:1.5rem;line-height:1.7;}
+.hero-dates{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:1.5rem;}
+.date-chip{background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.3);border-radius:20px;padding:6px 16px;font-size:13px;font-weight:600;}
+.hero-motto{font-size:15px;font-weight:700;border-left:3px solid rgba(255,255,255,0.5);padding-left:14px;opacity:0.95;margin-top:1rem;}
+.hero-motto small{display:block;font-size:12px;font-weight:400;opacity:0.8;margin-top:2px;}
+
+.lang-bar{display:flex;gap:6px;margin-bottom:1.5rem;}
+.lbtn{font-size:12px;padding:5px 14px;border-radius:20px;border:1px solid var(--border);background:var(--white);color:var(--gray);cursor:pointer;transition:all 0.12s;}
+.lbtn.on{background:var(--green);color:#fff;border-color:var(--green);}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:2rem;}
+.stat{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:1rem;text-align:center;}
+.stat-num{font-size:26px;font-weight:700;color:var(--green);line-height:1;}
+.stat-label{font-size:12px;color:var(--text2);margin-top:4px;line-height:1.4;}
+
+.section-head{font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:0.08em;margin:2rem 0 0.9rem;display:flex;align-items:center;gap:10px;}
+.section-head::after{content:'';flex:1;height:1px;background:var(--border);}
+
+.days{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:1rem;}
+@media(max-width:560px){.days{grid-template-columns:1fr;}}
+.day-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem;}
+.day-badge{display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:10px;}
+.day-badge.d1{background:var(--green-l);color:var(--green-d);}
+.day-badge.d2{background:var(--amber-l);color:var(--amber);}
+.day-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:8px;}
+.day-sub{font-size:12px;color:var(--text3);margin-bottom:12px;font-style:italic;}
+.day-items{list-style:none;display:flex;flex-direction:column;gap:7px;}
+.day-items li{font-size:13px;color:var(--text2);display:flex;gap:8px;align-items:flex-start;}
+.day-items li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0;margin-top:6px;}
+
+.subject-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:1rem;}
+.subj-card{border-radius:var(--r);padding:1.1rem 1.25rem;border:1px solid;}
+.subj-card.math{background:var(--purple-l);border-color:#AFA9EC;}
+.subj-card.eng{background:var(--green-l);border-color:#9FE1CB;}
+.subj-card.cn{background:var(--amber-l);border-color:#FAC775;}
+.subj-icon{font-size:22px;margin-bottom:8px;}
+.subj-title{font-size:14px;font-weight:700;margin-bottom:4px;}
+.subj-card.math .subj-title{color:#3C3489;}
+.subj-card.eng .subj-title{color:#085041;}
+.subj-card.cn .subj-title{color:#633806;}
+.subj-desc{font-size:12px;line-height:1.6;}
+.subj-card.math .subj-desc{color:#534AB7;}
+.subj-card.eng .subj-desc{color:#0F6E56;}
+.subj-card.cn .subj-desc{color:#854F0B;}
+
+.workflow{display:flex;align-items:center;gap:0;flex-wrap:wrap;margin-bottom:1rem;}
+.wf-step{flex:1;min-width:120px;background:var(--white);border:1px solid var(--border);border-radius:var(--rs);padding:12px 14px;}
+.wf-arrow{font-size:18px;color:var(--text3);padding:0 6px;flex-shrink:0;}
+.wf-tool{font-size:11px;font-weight:700;color:var(--green);margin-bottom:3px;}
+.wf-desc{font-size:12px;color:var(--text2);line-height:1.5;}
+
+.req-box{background:var(--coral-l);border:1px solid #F0997B;border-radius:var(--rs);padding:12px 16px;font-size:13px;color:var(--coral);margin-bottom:1rem;line-height:1.7;}
+.req-box strong{color:#712B13;}
+
+.prizes{display:flex;flex-direction:column;gap:8px;margin-bottom:1rem;}
+.prize{display:flex;align-items:center;gap:12px;background:var(--white);border:1px solid var(--border);border-radius:var(--rs);padding:10px 14px;}
+.prize-rank{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;flex-shrink:0;}
+.pr1{background:#FFF3CD;color:#856404;}
+.pr2{background:#e8e8e8;color:#444;}
+.pr3{background:#FAEEDA;color:#633806;}
+.prize-text{font-size:13px;color:var(--text2);line-height:1.5;}
+.prize-text strong{color:var(--text);display:block;}
+
+.notice-box{background:var(--green-l);border:1px solid #9FE1CB;border-radius:var(--r);padding:1.1rem 1.25rem;margin-bottom:2rem;}
+.notice-title{font-size:13px;font-weight:700;color:var(--green-d);margin-bottom:8px;}
+.notice-list{list-style:none;display:flex;flex-direction:column;gap:6px;}
+.notice-list li{font-size:13px;color:#085041;display:flex;gap:8px;align-items:flex-start;line-height:1.6;}
+.notice-list li span.icon{flex-shrink:0;font-size:14px;}
+
+.survey-wrap{background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:2rem;}
+.survey-tabs{display:flex;border-bottom:1px solid var(--border);}
+.stab{flex:1;padding:12px 8px;font-size:13px;font-weight:600;text-align:center;cursor:pointer;color:var(--text3);border:none;background:transparent;transition:all 0.12s;}
+.stab.on{color:var(--green);border-bottom:2px solid var(--green);background:var(--green-ll);}
+.survey-body{padding:1.25rem;}
+
+.q-block{margin-bottom:1.25rem;}
+.q-num{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;}
+.q-text{font-size:14px;font-weight:600;color:var(--text);margin-bottom:2px;line-height:1.5;}
+.q-sw{font-size:12px;color:var(--green);font-style:italic;margin-bottom:10px;line-height:1.5;}
+
+.opts{display:flex;flex-direction:column;gap:7px;}
+.opt{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border:1px solid var(--border);border-radius:9px;cursor:pointer;background:var(--bg);transition:all 0.1s;}
+.opt:hover{border-color:var(--green);background:var(--green-ll);}
+.opt input{margin-top:2px;flex-shrink:0;accent-color:var(--green);}
+.opt-label{font-size:13px;color:var(--text2);line-height:1.5;}
+.opt-label small{display:block;font-size:11px;color:var(--text3);margin-top:1px;}
+
+.opts-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+@media(max-width:420px){.opts-row{grid-template-columns:1fr;}}
+
+.scale-nums{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:5px;}
+.snum{width:36px;height:36px;border-radius:var(--rs);border:1px solid var(--border);background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;cursor:pointer;color:var(--gray);transition:all 0.1s;}
+.snum:hover{border-color:var(--green);color:var(--green);}
+.snum.on{background:var(--green);border-color:var(--green);color:#fff;}
+.scale-ends{display:flex;justify-content:space-between;font-size:11px;color:var(--text3);}
+
+textarea,input[type=text]{width:100%;border:1px solid var(--border);border-radius:var(--rs);padding:9px 12px;font-size:13px;color:var(--text);font-family:inherit;background:var(--bg);transition:border-color 0.12s;}
+textarea{resize:vertical;min-height:75px;}
+textarea:focus,input[type=text]:focus{outline:none;border-color:var(--green);}
+
+.vote-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px;}
+.vote-card{border:1px solid var(--border);border-radius:var(--rs);padding:10px 12px;cursor:pointer;background:var(--bg);transition:all 0.1s;}
+.vote-card:hover{border-color:var(--green);background:var(--green-ll);}
+.vote-card.picked{border-color:var(--green);background:var(--green-l);border-width:2px;}
+.vote-name{font-size:12px;font-weight:600;color:var(--text);}
+.vote-subj{font-size:11px;color:var(--text3);margin-top:2px;}
+
+.submit-btn{width:100%;padding:13px;border-radius:var(--rs);background:var(--green);color:#fff;font-size:14px;font-weight:700;border:none;cursor:pointer;margin-top:0.5rem;transition:background 0.12s;}
+.submit-btn:hover{background:var(--green-d);}
+
+.thanks{display:none;text-align:center;padding:2rem 1rem;}
+.thanks h3{font-size:17px;font-weight:700;color:var(--green);margin-bottom:8px;}
+.thanks p{font-size:13px;color:var(--text2);line-height:1.8;}
+
+.footer{text-align:center;font-size:12px;color:var(--text3);padding-top:1rem;border-top:1px solid var(--border);line-height:1.8;}
+.footer strong{color:var(--green);}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="hero">
+  <div class="hero-eyebrow">SAY Foundation · Zanzibar, Tanzania · April 2026</div>
+  <div class="hero-title" id="h-title">SAY AI Workshop<br>"My Subject, My App"</div>
+  <div class="hero-sub" id="h-sub">每位教师用 AI 为自己的学科开发一个专属 Web App，并在展示会上进行路演竞赛。<br>Every teacher builds an AI-powered Web App for their subject — then pitches it to win.</div>
+  <div class="hero-dates">
+    <div class="date-chip">Day 1 · April 10 · Build Day</div>
+    <div class="date-chip">Day 2 · April 11 · Showcase + Awards</div>
+  </div>
+  <div class="hero-motto" id="h-motto">
+    Every Teacher is a Developer.
+    <small id="h-motto-sub">每一位老师都是开发者 · Kila mwalimu ni mtengenezaji wa programu.</small>
+  </div>
+</div>
+
+<div class="lang-bar">
+  <button class="lbtn on" onclick="setL('zh',this)">中文</button>
+  <button class="lbtn" onclick="setL('en',this)">English</button>
+  <button class="lbtn" onclick="setL('sw',this)">Kiswahili</button>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="stat-num">37</div><div class="stat-label" id="s1">注册学员<br>Registered teachers</div></div>
+  <div class="stat"><div class="stat-num">2</div><div class="stat-label" id="s2">实战天数<br>Workshop days</div></div>
+  <div class="stat"><div class="stat-num">3</div><div class="stat-label" id="s3">竞赛学科<br>Subject tracks</div></div>
+  <div class="stat"><div class="stat-num">Top 3</div><div class="stat-label" id="s4">颁奖表彰<br>Awards given</div></div>
+</div>
+
+<div class="section-head" id="sh1">日程安排 · Schedule · Ratiba</div>
+<div class="days">
+  <div class="day-card">
+    <div class="day-badge d1" id="d1-badge">Day 1 · April 10 · 开发实战</div>
+    <div class="day-title" id="d1-title">Build Day — 用 AI 造工具</div>
+    <div class="day-sub" id="d1-sub">Siku ya Utengenezaji</div>
+    <ul class="day-items" id="d1-items">
+      <li>定义你的学科 App 功能与目标用户</li>
+      <li>DeepSeek 规划逻辑 + 课程大纲</li>
+      <li>Claude 生成 HTML/JS 代码</li>
+      <li>发布到 GitHub Pages，确保离线可用</li>
+      <li>在首页添加"Launch My App"按钮</li>
+    </ul>
+  </div>
+  <div class="day-card">
+    <div class="day-badge d2" id="d2-badge">Day 2 · April 11 · 路演竞赛</div>
+    <div class="day-title" id="d2-title">Showcase — 展示与评选</div>
+    <div class="day-sub" id="d2-sub">Maonyesho na Mashindano</div>
+    <ul class="day-items" id="d2-items">
+      <li>每人 3 分钟演示：课堂实用性</li>
+      <li>同行通过 GitHub 链接互评投票</li>
+      <li>评选最佳功能设计 Top 3</li>
+      <li>颁奖 + 研究数据记录</li>
+    </ul>
+  </div>
+</div>
+
+<div class="section-head" id="sh2">三条学科赛道 · Subject Tracks · Masomo Matatu</div>
+<div class="subject-grid">
+  <div class="subj-card math">
+    <div class="subj-icon">📐</div>
+    <div class="subj-title" id="m-title">数学 · Mathematics · Hisabati</div>
+    <div class="subj-desc" id="m-desc">代数求解器 / 几何工具<br>Quadratic solvers · Geometry tools<br>Kikokotoo cha aljebra · Zana za jiometri</div>
+  </div>
+  <div class="subj-card eng">
+    <div class="subj-icon">📖</div>
+    <div class="subj-title" id="e-title">英语 · English · Kiingereza</div>
+    <div class="subj-desc" id="e-desc">语法校对 / 石头城对话模拟<br>Grammar checker · Stone Town dialogue sim<br>Kikagua sarufi · Mazungumzo ya Stone Town</div>
+  </div>
+  <div class="subj-card cn">
+    <div class="subj-icon">🀄</div>
+    <div class="subj-title" id="c-title">汉语 · Chinese · Kichina</div>
+    <div class="subj-desc" id="c-desc">中英斯三语闪卡 / 汉字笔顺动画<br>Trilingual flashcards (CN-EN-SW) · Stroke order<br>Kadi za maneno za lugha tatu · Mchoro wa herufi</div>
+  </div>
+</div>
+
+<div class="section-head" id="sh3">AI 开发流程 · Workflow · Mtiririko wa AI</div>
+<div class="workflow">
+  <div class="wf-step">
+    <div class="wf-tool">DeepSeek</div>
+    <div class="wf-desc" id="wf1">规划学科逻辑与教学大纲结构<br><span style="font-size:11px;color:#aaa;">Logic & syllabus planning</span></div>
+  </div>
+  <div class="wf-arrow">→</div>
+  <div class="wf-step">
+    <div class="wf-tool">Claude</div>
+    <div class="wf-desc" id="wf2">生成 HTML / JS 网页代码<br><span style="font-size:11px;color:#aaa;">HTML/JS code generation</span></div>
+  </div>
+  <div class="wf-arrow">→</div>
+  <div class="wf-step">
+    <div class="wf-tool">GitHub Pages</div>
+    <div class="wf-desc" id="wf3">发布上线，全球永久访问<br><span style="font-size:11px;color:#aaa;">Publish & go live</span></div>
+  </div>
+</div>
+
+<div class="req-box" id="req-box">
+  <strong>硬性要求 · Hard Requirements · Masharti:</strong><br>
+  ✔ App 必须有"Check"或"Calculate"互动功能 · App must have a Check or Calculate function<br>
+  ✔ 缓存后离线可用 · Must work offline after caching · Inatumika bila mtandao baada ya cache<br>
+  ✔ GitHub 首页需有"Launch My App"按钮 · Add launch button on GitHub home
+</div>
+
+<div class="section-head" id="sh4">竞赛奖项 · Awards · Tuzo</div>
+<div class="prizes">
+  <div class="prize"><div class="prize-rank pr1">🥇</div><div class="prize-text"><strong id="p1t">最佳功能奖 · Best Functional App</strong><span id="p1d">App 功能最完整、课堂实用性最强 · Most complete & classroom-ready design</span></div></div>
+  <div class="prize"><div class="prize-rank pr2">🥈</div><div class="prize-text"><strong id="p2t">最佳创意奖 · Most Creative App</strong><span id="p2d">最具创意的学科工具设计 · Most original subject tool concept</span></div></div>
+  <div class="prize"><div class="prize-rank pr3">🥉</div><div class="prize-text"><strong id="p3t">最佳展示奖 · Best Pitch</strong><span id="p3d">3 分钟演示最清晰、说服力最强 · Clearest and most persuasive 3-minute demo</span></div></div>
+</div>
+
+<div class="notice-box">
+  <div class="notice-title" id="notice-title">📢 学员通知 · Notice for Teachers · Taarifa kwa Walimu</div>
+  <ul class="notice-list" id="notice-list">
+    <li><span class="icon">📅</span>本次实战营为周四周五（4月10–11日），非周六到校日，请提前安排好时间。</li>
+    <li><span class="icon">📱</span>请确保设备电量充足、流量足够，或提前下载好所需页面（离线备用）。</li>
+    <li><span class="icon">🔗</span>请提前确认你的 GitHub 教学网页链接可正常访问，路演时需要使用。</li>
+    <li><span class="icon">🤖</span>DeepSeek 和 Claude 都会用到，建议提前登录测试一遍。</li>
+    <li><span class="icon">📝</span>请在 Day 1 开始前完成下方"培训前问卷"，2 分钟即可完成。</li>
+  </ul>
+</div>
+
+<div class="section-head" id="sh5">问卷参与 · Survey · Dodoso</div>
+<div class="survey-wrap">
+  <div class="survey-tabs">
+    <button class="stab on" id="tab-pre" onclick="switchTab('pre')">📋 培训前 · Pre-Training · Kabla</button>
+    <button class="stab" id="tab-post" onclick="switchTab('post')">✅ 培训后 · Post-Training · Baada</button>
+  </div>
+
+  <div class="survey-body" id="panel-pre">
+    <div id="pre-form">
+
+      <div class="q-block">
+        <div class="q-num">Q1</div>
+        <div class="q-text">你的姓名与学校 · Your name & school</div>
+        <div class="q-sw">Jina lako na shule yako</div>
+        <input type="text" id="pre-name" placeholder="e.g. Pili A. Juma · Kama Sec School">
+      </div>
+
+      <div class="q-block">
+        <div class="q-num">Q2</div>
+        <div class="q-text">你计划开发哪门学科的 App？ · Which subject App will you build?</div>
+        <div class="q-sw">Utatengeneza App ya somo gani?</div>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="pre-subj" value="math"><span class="opt-label">📐 数学 · Mathematics · Hisabati</span></label>
+          <label class="opt"><input type="radio" name="pre-subj" value="english"><span class="opt-label">📖 英语 · English · Kiingereza</span></label>
+          <label class="opt"><input type="radio" name="pre-subj" value="chinese"><span class="opt-label">🀄 汉语 · Chinese · Kichina</span></label>
+          <label class="opt"><input type="radio" name="pre-subj" value="other"><span class="opt-label">💬 其他学科 · Other subject · Somo lingine</span></label>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-num">Q3</div>
+        <div class="q-text">你想解决学生的哪个课堂痛点？ · What classroom problem will your App solve?</div>
+        <div class="q-sw">Ni tatizo gani darasani unalotaka kutatua?</div>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="pre-pain" value="practice"><span class="opt-label">📝 缺乏练习题 · Not enough practice exercises<small>Mazoezi hayatoshi</small></span></label>
+          <label class="opt"><input type="radio" name="pre-pain" value="feedback"><span class="opt-label">✔ 批改反馈太慢 · Grading/feedback too slow<small>Maoni yanachukua muda mrefu</small></span></label>
+          <label class="opt"><input type="radio" name="pre-pain" value="visual"><span class="opt-label">🖼 缺乏直观教具 · No visual teaching aids<small>Hakuna zana za kuona</small></span></label>
+          <label class="opt"><input type="radio" name="pre-pain" value="offline"><span class="opt-label">📵 没网络时无法教学 · Can't teach without internet<small>Kushindwa kufundisha bila mtandao</small></span></label>
+          <label class="opt"><input type="radio" name="pre-pain" value="other"><span class="opt-label">💬 其他 · Other · Nyingine</span></label>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-num">Q4</div>
+        <div class="q-text">你的 GitHub 教学网页目前状态？ · What is your GitHub page status?</div>
+        <div class="q-sw">Hali ya ukurasa wako wa GitHub ni ipi?</div>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="pre-gh" value="live"><span class="opt-label">✅ 已上线，运行正常 · Live and working<small>Uko mtandaoni, inafanya kazi</small></span></label>
+          <label class="opt"><input type="radio" name="pre-gh" value="issues"><span class="opt-label">⚠️ 已发布但有问题 · Published but has issues<small>Imechapishwa lakini kuna matatizo</small></span></label>
+          <label class="opt"><input type="radio" name="pre-gh" value="progress"><span class="opt-label">🔄 还在建设中 · Still in progress<small>Bado ninafanya kazi</small></span></label>
+          <label class="opt"><input type="radio" name="pre-gh" value="stuck"><span class="opt-label">❌ 卡住了，需要帮助 · Stuck, need help<small>Nimekwama, ninahitaji msaada</small></span></label>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-num">Q5</div>
+        <div class="q-text">用 AI 备课，你每周能节省多少时间？（预估）· How much time per week do you expect AI to save you?</div>
+        <div class="q-sw">Unafikiri AI itakuokoa muda kiasi gani kwa wiki?</div>
+        <div class="opts opts-row">
+          <label class="opt"><input type="radio" name="pre-time" value="30m"><span class="opt-label">30 分钟以下<br><small>Under 30 min / Chini ya dk 30</small></span></label>
+          <label class="opt"><input type="radio" name="pre-time" value="1h"><span class="opt-label">约 1 小时<br><small>~1 hour / Saa 1</small></span></label>
+          <label class="opt"><input type="radio" name="pre-time" value="2-3h"><span class="opt-label">2–3 小时<br><small>2–3 hours / Saa 2–3</small></span></label>
+          <label class="opt"><input type="radio" name="pre-time" value="3h+"><span class="opt-label">3 小时以上<br><small>3+ hours / Zaidi ya saa 3</small></span></label>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-num">Q6</div>
+        <div class="q-text">你对这次实战营的信心评分 · Confidence score for this workshop</div>
+        <div class="q-sw">Kiwango cha ujasiri wako kwa warsha hii (1–10)</div>
+        <div class="scale-nums" id="sc-pre">
+          <div class="snum" onclick="pick('sc-pre',this)">1</div><div class="snum" onclick="pick('sc-pre',this)">2</div><div class="snum" onclick="pick('sc-pre',this)">3</div><div class="snum" onclick="pick('sc-pre',this)">4</div><div class="snum" onclick="pick('sc-pre',this)">5</div><div class="snum" onclick="pick('sc-pre',this)">6</div><div class="snum" onclick="pick('sc-pre',this)">7</div><div class="snum" onclick="pick('sc-pre',this)">8</div><div class="snum" onclick="pick('sc-pre',this)">9</div><div class="snum" onclick="pick('sc-pre',this)">10</div>
+        </div>
+        <div class="scale-ends"><span>1 = 完全没把握</span><span>10 = 非常有信心</span></div>
+      </div>
+
+      <button class="submit-btn" onclick="submit('pre')">提交培训前问卷 · Submit · Wasilisha</button>
+    </div>
+    <div class="thanks" id="thanks-pre">
+      <h3>已收到！Thank you · Asante sana!</h3>
+      <p>你的回答已记录。Your response is recorded. Majibu yako yamehifadhiwa.<br><br>
+      📅 <strong>请准时参加 April 10 开发实战日</strong><br>
+      Please join us on Day 1, April 10 · Tafadhali jiunge nasi tarehe 10 Aprili</p>
+    </div>
+  </div>
+
+  <div class="survey-body" id="panel-post" style="display:none;">
+    <div id="post-form">
+
+      <div class="q-block">
+        <div class="q-num">Q1</div>
+        <div class="q-text">你的姓名与学科 App 名称 · Your name & App name</div>
+        <div class="q-sw">Jina lako na jina la App yako</div>
+        <input type="text" id="post-name" placeholder="e.g. Pili A. Juma · Math Solver Pro">
+      </div>
+
+      <div class="q-block">
+        <div class="q-num">Q2</div>
+        <div class="q-text">贴上你的 App GitHub 链接 · Paste your App's GitHub URL</div>
+        <div class="q-sw">Weka URL ya App yako ya GitHub</div>
+        <input type="text" id="post-url" placeholder="https://yourname.github.io/my-app/">
+      </div>
+
+      <div class="q-block">
+        <div class="q-num">Q3</div>
+        <div class="q-text">借助 AI 完成代码花了多少分钟？ · How many minutes did AI coding take?</div>
+        <div class="q-sw">AI imekuchukua dakika ngapi kutengeneza kodi?</div>
+        <div class="opts opts-row">
+          <label class="opt"><input type="radio" name="post-mins" value="u30"><span class="opt-label">30 分钟以内<br><small>Under 30 min</small></span></label>
+          <label class="opt"><input type="radio" name="post-mins" value="30-60"><span class="opt-label">30–60 分钟<br><small>30–60 min</small></span></label>
+          <label class="opt"><input type="radio" name="post-mins" value="1-2h"><span class="opt-label">1–2 小时<br><small>1–2 hours</small></span></label>
+          <label class="opt"><input type="radio" name="post-mins" value="2h+"><span class="opt-label">2 小时以上<br><small>2+ hours</small></span></label>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-num">Q4</div>
+        <div class="q-text">你的 App 离线可用吗？ · Does your App work offline?</div>
+        <div class="q-sw">Je, App yako inafanya kazi bila mtandao?</div>
+        <div class="opts opts-row">
+          <label class="opt"><input type="radio" name="post-offline" value="yes"><span class="opt-label">✅ 可以 · Yes · Ndiyo</span></label>
+          <label class="opt"><input type="radio" name="post-offline" value="partial"><span class="opt-label">⚠️ 部分可以 · Partially · Kidogo</span></label>
+          <label class="opt"><input type="radio" name="post-offline" value="no"><span class="opt-label">❌ 不可以 · No · Hapana</span></label>
+          <label class="opt"><input type="radio" name="post-offline" value="testing"><span class="opt-label">🔄 还在测试 · Testing · Ninaangalia</span></label>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-num">Q5</div>
+        <div class="q-text">和传统备课比，AI 为你节省了多少时间？ · Compared to traditional prep, how much time did AI save?</div>
+        <div class="q-sw">Ukilinganisha na maandalizi ya kawaida, AI iliokoa muda gani?</div>
+        <div class="opts opts-row">
+          <label class="opt"><input type="radio" name="post-save" value="same"><span class="opt-label">差不多<br><small>About the same</small></span></label>
+          <label class="opt"><input type="radio" name="post-save" value="30m"><span class="opt-label">节省 30 分钟+<br><small>Saved 30+ min</small></span></label>
+          <label class="opt"><input type="radio" name="post-save" value="2h"><span class="opt-label">节省 2 小时+<br><small>Saved 2+ hours</small></span></label>
+          <label class="opt"><input type="radio" name="post-save" value="halfday"><span class="opt-label">节省半天+<br><small>Saved half a day+</small></span></label>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-num">Q6</div>
+        <div class="q-text">为 2 位同事最佳 App 投票 · Vote for 2 colleagues with the best Apps</div>
+        <div class="q-sw">Mpigie kura walimu 2 wenye App bora zaidi (bonyeza 2)</div>
+        <div class="vote-grid" id="vote-grid"></div>
+        <div style="font-size:11px;color:var(--text3);margin-top:6px;" id="vote-count">已选 0 / 2 · Selected 0 of 2</div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-num">Q7</div>
+        <div class="q-text">本次实战营你的收获评分 · Rate your overall learning from this workshop</div>
+        <div class="q-sw">Tathmini mafunzo yako ya jumla (1–10)</div>
+        <div class="scale-nums" id="sc-post">
+          <div class="snum" onclick="pick('sc-post',this)">1</div><div class="snum" onclick="pick('sc-post',this)">2</div><div class="snum" onclick="pick('sc-post',this)">3</div><div class="snum" onclick="pick('sc-post',this)">4</div><div class="snum" onclick="pick('sc-post',this)">5</div><div class="snum" onclick="pick('sc-post',this)">6</div><div class="snum" onclick="pick('sc-post',this)">7</div><div class="snum" onclick="pick('sc-post',this)">8</div><div class="snum" onclick="pick('sc-post',this)">9</div><div class="snum" onclick="pick('sc-post',this)">10</div>
+        </div>
+        <div class="scale-ends"><span>1 = 收获不大</span><span>10 = 收获巨大</span></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-num">Q8</div>
+        <div class="q-text">你想对教授或团队说什么？ · Any message for the professor or team?</div>
+        <div class="q-sw">Una ujumbe wowote kwa profesa au timu?</div>
+        <textarea placeholder="随意填写 · Write freely · Andika huru..."></textarea>
+      </div>
+
+      <button class="submit-btn" onclick="submit('post')">提交培训后问卷 · Submit · Wasilisha</button>
+    </div>
+    <div class="thanks" id="thanks-post">
+      <h3>感谢参与！Thank you · Asante sana!</h3>
+      <p>你的反馈已提交，将用于持续改进 SAY Class 系统。<br>
+      Your feedback helps us improve the SAY Hub system.<br>
+      Maoni yako yatatumika kuboresha mfumo wa SAY Hub.<br><br>
+      🏆 <strong>获奖名单将通过 WhatsApp 公布</strong><br>
+      Winners announced via WhatsApp · Washindi watangazwa kupitia WhatsApp</p>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <strong>SAY Foundation</strong> · AI Education Project · Zanzibar, Tanzania · 2026<br>
+  SAY HUB Control Centre · Powered by DeepSeek + Claude + GitHub Pages<br>
+  <a href="#">sayclass.github.io</a> &nbsp;|&nbsp; Contact via WhatsApp group
+</div>
+
+</div>
+<script>
+const teachers=[
+  {name:'Khalid Kh Salum',subj:'ICT'},{name:'Khairat N. Abdalla',subj:'ENG+KISW'},{name:'Sabrina S. Abdalla',subj:'HIST+GEO'},
+  {name:'Abed S. Abeid',subj:'MATH+ICT'},{name:'Pili A. Juma',subj:'MATH'},{name:'Ame Rashid Ame',subj:'MATH'},
+  {name:'Badru Khatib Khamis',subj:'HIST+GEO'},{name:'Rauhiya Ali Maalim',subj:'KISWAHILI'},{name:'Iptisam Amran Masoud',subj:'ICT'},
+  {name:'Haruwa Kh. Mohd',subj:'KISWAHILI'},{name:'Safia Ratibu Mfamau',subj:'KISWAHILI'},{name:'Samira Zuberi Saidi',subj:'CIVICS'},
+  {name:'Abdul Latif J. Said',subj:'BIOLOGY'},{name:'Zainab Soud Hamad',subj:'PHYSICS'},{name:'Idrisa Hassan Sinde',subj:'BIOLOGY'},
+  {name:'Khamis Makame Ame',subj:'ICT'},{name:'Hasina Omar Ali',subj:'GEOGRAPHY'},{name:'Ramadhan M Abdullah',subj:'CIVICS'},
+  {name:'Munir Othman Ali',subj:'PHYSICS'},{name:'Makuhula S. Sheha',subj:'MATH'},{name:'Khamis Nuhu Ali',subj:'ICT'},
+  {name:'Salha H. Khamis',subj:'MATH'},{name:'Yusuf M. Makame',subj:'BIO+CHEM'},{name:'Fatma Mohamed Suleiman',subj:'KISWAHILI'},
+  {name:'Ghanil Othman Salum',subj:'MATH'},{name:'MwanaKhamis A. Malik',subj:'KISWAHILI'},{name:'Khamis M Ame',subj:'GEOGRAPHY'},
+  {name:'Alawi Kh Hassan',subj:'PHYSICS'},{name:'Miraji S Rajab',subj:'MATH'},{name:'Mbarouk A Mohamed',subj:'CHEMISTRY'},
+  {name:'Ali O Ali',subj:'KISW+ARABIC'},{name:'Wanu M Mussa',subj:'ENG+SPORTS'},{name:'Eduu Omar Haroon',subj:'PHYSICS'},
+  {name:'Yussuf O Makame',subj:'GEOGRAPHY'},{name:'Bimkubwa A Khamis',subj:'BIOLOGY'},{name:'Issa Yahya Issa',subj:'ICT'},
+  {name:'Asha S. Said',subj:'ENGLISH'}
+];
+
+let votes=[];
+function buildVoteGrid(){
+  const g=document.getElementById('vote-grid');
+  g.innerHTML=teachers.map((t,i)=>`<div class="vote-card" id="vc-${i}" onclick="toggleVote(${i})"><div class="vote-name">${t.name}</div><div class="vote-subj">${t.subj}</div></div>`).join('');
+}
+function toggleVote(i){
+  const card=document.getElementById('vc-'+i);
+  if(votes.includes(i)){votes=votes.filter(v=>v!==i);card.classList.remove('picked');}
+  else if(votes.length<2){votes.push(i);card.classList.add('picked');}
+  else{alert('最多选2位 · Max 2 votes · Kura 2 tu');}
+  document.getElementById('vote-count').textContent=`已选 ${votes.length} / 2 · Selected ${votes.length} of 2`;
+}
+buildVoteGrid();
+
+function pick(groupId,el){
+  document.getElementById(groupId).querySelectorAll('.snum').forEach(n=>n.classList.remove('on'));
+  el.classList.add('on');
+}
+
+function switchTab(t){
+  document.getElementById('tab-pre').classList.toggle('on',t==='pre');
+  document.getElementById('tab-post').classList.toggle('on',t==='post');
+  document.getElementById('panel-pre').style.display=t==='pre'?'':'none';
+  document.getElementById('panel-post').style.display=t==='post'?'':'none';
+}
+
+function submit(type){
+  const nm=document.getElementById(type+'-name');
+  if(!nm||!nm.value.trim()){alert('请填写姓名 · Please enter your name · Tafadhali weka jina lako');return;}
+  document.getElementById(type+'-form').style.display='none';
+  document.getElementById('thanks-'+type).style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+const L={
+  zh:{
+    heroTitle:'SAY AI 实战营<br>"我的学科，我的 App"',
+    heroSub:'每位教师用 AI 为自己的学科开发一个专属 Web App，并在展示会上进行路演竞赛。',
+    sh1:'日程安排',sh2:'三条学科赛道',sh3:'AI 开发流程',sh4:'竞赛奖项',sh5:'问卷参与',
+    d1badge:'Day 1 · 4月10日 · 开发实战',d1title:'Build Day — 用 AI 造工具',d1sub:'Siku ya Utengenezaji',
+    d1items:['定义你的学科 App 功能与目标用户','DeepSeek 规划逻辑 + 课程大纲','Claude 生成 HTML/JS 代码','发布到 GitHub Pages，确保离线可用','在首页添加"Launch My App"按钮'],
+    d2badge:'Day 2 · 4月11日 · 路演竞赛',d2title:'Showcase — 展示与评选',d2sub:'Maonyesho na Mashindano',
+    d2items:['每人 3 分钟演示：课堂实用性','同行通过 GitHub 链接互评投票','评选最佳功能设计 Top 3','颁奖 + 研究数据记录'],
+    s1:'注册学员',s2:'实战天数',s3:'竞赛学科',s4:'颁奖表彰',
+    noticeTitle:'📢 学员通知',
+    notices:['本次实战营为周四周五（4月10–11日），非周六到校日，请提前安排好时间。','请确保设备电量充足、流量足够，或提前下载好所需页面（离线备用）。','请提前确认你的 GitHub 教学网页链接可正常访问，路演时需要使用。','DeepSeek 和 Claude 都会用到，建议提前登录测试一遍。','请在 Day 1 开始前完成下方"培训前问卷"，2 分钟即可完成。']
+  },
+  en:{
+    heroTitle:'SAY AI Workshop<br>"My Subject, My App"',
+    heroSub:'Every teacher builds an AI-powered Web App for their subject — then pitches it at the Showcase to win.',
+    sh1:'Schedule',sh2:'Subject Tracks',sh3:'AI Workflow',sh4:'Awards',sh5:'Survey',
+    d1badge:'Day 1 · April 10 · Build Day',d1title:'Build Day — Build your tool with AI',d1sub:'Siku ya Utengenezaji',
+    d1items:['Define your App\'s function and target students','Use DeepSeek for logic & syllabus planning','Use Claude to generate HTML/JS code','Publish to GitHub Pages — must work offline','Add a "Launch My App" button on your homepage'],
+    d2badge:'Day 2 · April 11 · Showcase',d2title:'Showcase — Demo & Awards',d2sub:'Maonyesho na Mashindano',
+    d2items:['3-minute pitch on classroom utility','Peer voting via GitHub links','Top 3 awarded for best functional design','Award ceremony + research data collection'],
+    s1:'Registered teachers',s2:'Workshop days',s3:'Subject tracks',s4:'Awards given',
+    noticeTitle:'📢 Notice for Teachers',
+    notices:['This workshop runs Thursday–Friday (Apr 10–11), not the regular Saturday session. Please plan ahead.','Ensure your device is charged and you have sufficient data, or download pages in advance for offline use.','Confirm your GitHub teaching page is accessible before Day 2 — you\'ll need it for your pitch.','Both DeepSeek and Claude will be used. Test your login to both before arriving.','Please complete the Pre-Training Survey below before Day 1 begins — it only takes 2 minutes.']
+  },
+  sw:{
+    heroTitle:'Warsha ya AI ya SAY<br>"Somo Langu, App Yangu"',
+    heroSub:'Kila mwalimu ataunda App ya somo lake kwa kutumia AI, kisha ataonyesha kazini kwenye mashindano.',
+    sh1:'Ratiba',sh2:'Masomo Matatu',sh3:'Mtiririko wa AI',sh4:'Tuzo',sh5:'Dodoso',
+    d1badge:'Siku 1 · Aprili 10 · Utengenezaji',d1title:'Siku ya Utengenezaji — Jenga kwa AI',d1sub:'Build Day',
+    d1items:['Fafanua kazi ya App yako na wanafunzi wanaolengwa','Tumia DeepSeek kupanga mantiki na silabasi','Tumia Claude kutengeneza kodi ya HTML/JS','Chapisha GitHub Pages — lazima ifanye kazi bila mtandao','Ongeza kitufe cha "Launch My App" kwenye ukurasa wako'],
+    d2badge:'Siku 2 · Aprili 11 · Maonyesho',d2title:'Maonyesho — Onyesha na Kushindana',d2sub:'Showcase & Awards',
+    d2items:['Dakika 3 za kuonyesha matumizi darasani','Tathmini ya wenzako kupitia link za GitHub','Tuzo kwa ubunifu bora wa kiufundi (Top 3)','Utoaji wa tuzo + ukusanyaji wa data ya utafiti'],
+    s1:'Walimu waliojisajili',s2:'Siku za warsha',s3:'Masomo ya kushindana',s4:'Tuzo zinazotolewa',
+    noticeTitle:'📢 Taarifa kwa Walimu',
+    notices:['Warsha hii itafanyika Alhamisi-Ijumaa (Apr 10–11), si Jumamosi ya kawaida. Panga ratiba yako mapema.','Hakikisha kifaa chako kimechajwa na una data ya kutosha, au pakua kurasa mapema kwa matumizi ya nje ya mtandao.','Thibitisha kwamba link yako ya GitHub inafunguka vizuri kabla ya Siku 2 — utaihitaji kwa maonyesho yako.','Zana zote mbili — DeepSeek na Claude — zitatumika. Jaribu kuingia kwao kabla ya warsha.','Tafadhali jaza Dodoso la Kabla ya Mafunzo hapa chini kabla Siku 1 haijanza — inachukua dakika 2 tu.']
+  }
+};
+let lang='zh';
+function setL(l,btn){
+  lang=l;
+  document.querySelectorAll('.lbtn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  const d=L[l];
+  document.getElementById('h-title').innerHTML=d.heroTitle;
+  document.getElementById('h-sub').textContent=d.heroSub;
+  ['sh1','sh2','sh3','sh4','sh5','s1','s2','s3','s4'].forEach(id=>{ const el=document.getElementById(id); if(el) el.firstChild.textContent=d[id]||d[id]; });
+  document.getElementById('sh1').childNodes[0].textContent=d.sh1+' · ';
+  document.getElementById('sh2').childNodes[0].textContent=d.sh2+' · ';
+  document.getElementById('sh3').childNodes[0].textContent=d.sh3+' · ';
+  document.getElementById('sh4').childNodes[0].textContent=d.sh4+' · ';
+  document.getElementById('sh5').childNodes[0].textContent=d.sh5+' · ';
+  document.getElementById('s1').innerHTML=d.s1;
+  document.getElementById('s2').innerHTML=d.s2;
+  document.getElementById('s3').innerHTML=d.s3;
+  document.getElementById('s4').innerHTML=d.s4;
+  document.getElementById('d1-badge').textContent=d.d1badge;
+  document.getElementById('d1-title').textContent=d.d1title;
+  document.getElementById('d1-sub').textContent=d.d1sub;
+  document.getElementById('d1-items').innerHTML=d.d1items.map(i=>`<li>${i}</li>`).join('');
+  document.getElementById('d2-badge').textContent=d.d2badge;
+  document.getElementById('d2-title').textContent=d.d2title;
+  document.getElementById('d2-sub').textContent=d.d2sub;
+  document.getElementById('d2-items').innerHTML=d.d2items.map(i=>`<li>${i}</li>`).join('');
+  document.getElementById('notice-title').textContent=d.noticeTitle;
+  document.getElementById('notice-list').innerHTML=d.notices.map((n,i)=>{
+    const icons=['📅','📱','🔗','🤖','📝'];
+    return `<li><span class="icon">${icons[i]}</span>${n}</li>`;
+  }).join('');
+}
+</script>
+</body>
+</html>
